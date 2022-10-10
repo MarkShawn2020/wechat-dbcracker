@@ -182,7 +182,7 @@ pip install -r requirements.txt
 ### test all the database keys
 
 ```shell
-python src2/main.py
+python src/main.py
 ```
 
 ## ref
