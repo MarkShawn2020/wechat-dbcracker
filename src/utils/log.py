@@ -7,7 +7,7 @@ import os.path
 import sys
 from logging.handlers import TimedRotatingFileHandler
 
-from base import LOGS_DIR
+from path import LOGS_DIR
 
 
 FORMATTER = logging.Formatter(

@@ -4,9 +4,8 @@ author: https://github.com/MarkShawn2020
 create: 8月 24, 2022, 03:19
 """
 import json
-from urllib.parse import quote
 
-from log import get_logger
+from utils.log import get_logger
 
 logger = get_logger('utils-log')
 

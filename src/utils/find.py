@@ -1,10 +1,10 @@
 from sqlite3.dbapi2 import Cursor
 from typing import List
 
-from contact import Contact
-from support.db import genFindSql, cursor2dictList
+from core.contact import Contact
+from utils.db import genFindSql, cursor2dictList
 
-from db_center import DBCenter
+from core.db_center import DBCenter
 
 
 def _findContacts(wdd: DBCenter, name, ambiguous=True, fromRemark=True, fromNickname=True, fromAliasName=False) \

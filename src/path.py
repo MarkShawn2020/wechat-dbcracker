@@ -10,5 +10,7 @@ BASE_PATH = pathlib.Path(abspath(__file__))
 SRC_DIR = BASE_PATH.parent
 PROJECT_DIR = SRC_DIR.parent
 DATA_DIR = PROJECT_DIR / 'data'
+DATA_DUMP_DIR = DATA_DIR / 'db'
+
 DATA_OUT_DIR = DATA_DIR / 'out'
 LOGS_DIR = PROJECT_DIR / 'logs'

@@ -37,8 +37,10 @@ available database paths:
 
 import os
 
-from branch.config import WDB_ROOT
-from support.db import dropDS_Store, findDbs
+from utils.db import dropDS_Store, findDbs
+
+# 需要确认是否是自己的ROOT，否则
+WDB_ROOT = "/Users/mark/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat"
 
 
 class WechatLocalDatabases:

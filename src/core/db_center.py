@@ -2,9 +2,9 @@ import json
 import os
 from typing import Dict, List
 
-from db import DB
-from log import get_logger
-from support.const import DATA_PATH
+from path import DATA_DIR
+from core.db import DB
+from utils.log import get_logger
 
 
 logger = get_logger('DBCenter')
@@ -32,7 +32,7 @@ class DBCenter:
                 assert db.db_name == self.chatsMap.get(table_name, db.db_name)
                 self.chatsMap[table_name] = db.db_name
 
-        chatmap_fp = os.path.join(DATA_PATH, "gen", "chatmap.json")
+        chatmap_fp = os.path.join(DATA_DIR, "gen", "chatmap.json")
         with open(chatmap_fp, "w") as f:
             json.dump(self.chatsMap, f, indent=2, ensure_ascii=False)
             logger.info(f"generated chatmap to file://{chatmap_fp}")
@@ -53,7 +53,7 @@ class DBCenter:
 def createDBCenter() -> DBCenter:
     dbc = DBCenter()
 
-    with open(os.path.join(DATA_PATH, "dbcracker.log")) as f:
+    with open(os.path.join(DATA_DIR, "dbcracker.log")) as f:
         db_path = db_key = None
         for line in f.readlines():
             if line.startswith("sqlcipher"):

@@ -1,10 +1,12 @@
 import os
 from sqlite3.dbapi2 import Cursor
-from typing import Optional
 
-from support.const import PAGE_SIZE_BASE
-from support.log import logger
-from support.db import connect_db
+from utils.log import get_logger
+from utils.db import connect_db
+
+logger = get_logger("DB")
+
+PAGE_SIZE_BASE = 1024
 
 
 class DBBase:

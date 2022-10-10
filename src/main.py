@@ -1,8 +1,5 @@
-import os
-
-from db_center import DBCenter, createDBCenter
-from support.const import DATA_PATH
-from support.find import findEasy
+from core.db_center import createDBCenter
+from utils.find import findEasy
 
 
 if __name__ == '__main__':
@@ -19,6 +16,8 @@ if __name__ == '__main__':
 
     dbc = createDBCenter()
     contact = findEasy(dbc, args.search_key, isGroup=args.is_group)
+    print(contact)
+
     if args.query_chat_history:
         print(contact.queryChatHistory())
     if args.dump_chat_history:

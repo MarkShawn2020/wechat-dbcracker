@@ -5,7 +5,7 @@ from typing import List
 
 from pysqlcipher3 import dbapi2 as sqlite
 
-from log import get_logger
+from utils.log import get_logger
 
 logger = get_logger('utils-db')
 
