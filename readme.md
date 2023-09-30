@@ -15,6 +15,7 @@ find /usr/local/Cellar -name libcrypto.a
 ```
 
 2. use the libcrypto.a with openssl version >= 3
+
 ```shell
 LIBCRYPTO={YOUR-libcrypto.a}
 ```

@@ -1,0 +1,51 @@
+2022-08-25 20:21:40,094 DEBUG    [db.py:20] <utils-db> connecting /Users/mark/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/KeyValue/1d35a41b3adb8b335cc59362ad55ee88/KeyValue.db
+2022-08-25 20:21:40,109 DEBUG    [db.py:26] <utils-db> committed
+2022-08-25 20:21:40,110 DEBUG    [db.py:20] <utils-db> connecting /Users/mark/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/1d35a41b3adb8b335cc59362ad55ee88/Contact/wccontact_new2.db
+2022-08-25 20:21:40,110 DEBUG    [db.py:26] <utils-db> committed
+2022-08-25 20:21:40,111 DEBUG    [db.py:20] <utils-db> connecting /Users/mark/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/1d35a41b3adb8b335cc59362ad55ee88/Session/session_new.db
+2022-08-25 20:21:40,111 DEBUG    [db.py:26] <utils-db> committed
+2022-08-25 20:21:40,111 DEBUG    [db.py:20] <utils-db> connecting /Users/mark/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/1d35a41b3adb8b335cc59362ad55ee88/Message/msg_0.db
+2022-08-25 20:21:40,111 DEBUG    [db.py:26] <utils-db> committed
+2022-08-25 20:21:40,112 DEBUG    [db.py:20] <utils-db> connecting /Users/mark/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/1d35a41b3adb8b335cc59362ad55ee88/Message/msg_6.db
+2022-08-25 20:21:40,112 DEBUG    [db.py:26] <utils-db> committed
+2022-08-25 20:21:40,112 DEBUG    [db.py:20] <utils-db> connecting /Users/mark/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/1d35a41b3adb8b335cc59362ad55ee88/Message/msg_9.db
+2022-08-25 20:21:40,113 DEBUG    [db.py:26] <utils-db> committed
+2022-08-25 20:21:40,113 DEBUG    [db.py:20] <utils-db> connecting /Users/mark/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/1d35a41b3adb8b335cc59362ad55ee88/Message/msg_4.db
+2022-08-25 20:21:40,114 DEBUG    [db.py:26] <utils-db> committed
+2022-08-25 20:21:40,114 DEBUG    [db.py:20] <utils-db> connecting /Users/mark/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/1d35a41b3adb8b335cc59362ad55ee88/Message/msg_1.db
+2022-08-25 20:21:40,114 DEBUG    [db.py:26] <utils-db> committed
+2022-08-25 20:21:40,115 DEBUG    [db.py:20] <utils-db> connecting /Users/mark/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/1d35a41b3adb8b335cc59362ad55ee88/Message/msg_8.db
+2022-08-25 20:21:40,115 DEBUG    [db.py:26] <utils-db> committed
+2022-08-25 20:21:40,115 DEBUG    [db.py:20] <utils-db> connecting /Users/mark/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/1d35a41b3adb8b335cc59362ad55ee88/Message/msg_7.db
+2022-08-25 20:21:40,115 DEBUG    [db.py:26] <utils-db> committed
+2022-08-25 20:21:40,116 DEBUG    [db.py:20] <utils-db> connecting /Users/mark/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/1d35a41b3adb8b335cc59362ad55ee88/Message/msg_5.db
+2022-08-25 20:21:40,116 DEBUG    [db.py:26] <utils-db> committed
+2022-08-25 20:21:40,116 DEBUG    [db.py:20] <utils-db> connecting /Users/mark/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/1d35a41b3adb8b335cc59362ad55ee88/Message/msg_3.db
+2022-08-25 20:21:40,116 DEBUG    [db.py:26] <utils-db> committed
+2022-08-25 20:21:40,117 DEBUG    [db.py:20] <utils-db> connecting /Users/mark/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/1d35a41b3adb8b335cc59362ad55ee88/Message/msg_2.db
+2022-08-25 20:21:40,117 DEBUG    [db.py:26] <utils-db> committed
+2022-08-25 20:21:40,117 DEBUG    [db.py:20] <utils-db> connecting /Users/mark/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/1d35a41b3adb8b335cc59362ad55ee88/Favorites/favorites.db
+2022-08-25 20:21:40,118 DEBUG    [db.py:26] <utils-db> committed
+2022-08-25 20:21:40,118 DEBUG    [db.py:20] <utils-db> connecting /Users/mark/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/1d35a41b3adb8b335cc59362ad55ee88/MMLive/live_main.db
+2022-08-25 20:21:40,119 DEBUG    [db.py:26] <utils-db> committed
+2022-08-25 20:21:40,119 DEBUG    [db.py:20] <utils-db> connecting /Users/mark/Library/Containers/com.tencent.xinWeChat/Data/Library/Caches/com.tencent.xinWeChat/2.0b4.0.9/1d35a41b3adb8b335cc59362ad55ee88/Sns/Data/sns.db
+2022-08-25 20:21:40,120 DEBUG    [db.py:26] <utils-db> committed
+2022-08-25 20:21:40,120 DEBUG    [db.py:20] <utils-db> connecting /Users/mark/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/1d35a41b3adb8b335cc59362ad55ee88/Sync/oplog_1.1.db
+2022-08-25 20:21:40,121 DEBUG    [db.py:26] <utils-db> committed
+2022-08-25 20:21:40,121 DEBUG    [db.py:20] <utils-db> connecting /Users/mark/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/1d35a41b3adb8b335cc59362ad55ee88/Account/Beta.db
+2022-08-25 20:21:40,122 DEBUG    [db.py:26] <utils-db> committed
+2022-08-25 20:21:40,122 DEBUG    [db.py:20] <utils-db> connecting /Users/mark/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/1d35a41b3adb8b335cc59362ad55ee88/Stickers/stickers.db
+2022-08-25 20:21:40,123 DEBUG    [db.py:26] <utils-db> committed
+2022-08-25 20:21:40,123 DEBUG    [db.py:20] <utils-db> connecting /Users/mark/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/1d35a41b3adb8b335cc59362ad55ee88/Message/fts/ftsmessage.db
+2022-08-25 20:21:40,123 DEBUG    [db.py:26] <utils-db> committed
+2022-08-25 20:21:40,124 DEBUG    [db.py:20] <utils-db> connecting /Users/mark/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/1d35a41b3adb8b335cc59362ad55ee88/Message/ftsfile/ftsfilemessage.db
+2022-08-25 20:21:40,125 DEBUG    [db.py:26] <utils-db> committed
+2022-08-25 20:21:40,125 DEBUG    [db.py:20] <utils-db> connecting /Users/mark/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/1d35a41b3adb8b335cc59362ad55ee88/Group/group_new.db
+2022-08-25 20:21:40,125 DEBUG    [db.py:26] <utils-db> committed
+2022-08-25 20:21:40,126 DEBUG    [db.py:20] <utils-db> connecting /Users/mark/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/1d35a41b3adb8b335cc59362ad55ee88/Message/fileMsg.db
+2022-08-25 20:21:40,127 DEBUG    [db.py:26] <utils-db> committed
+2022-08-25 20:21:40,127 DEBUG    [db.py:20] <utils-db> connecting /Users/mark/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/1d35a41b3adb8b335cc59362ad55ee88/RevokeMsg/revokemsg.db
+2022-08-25 20:21:40,128 DEBUG    [db.py:26] <utils-db> committed
+2022-08-25 20:21:40,132 DEBUG    [db.py:20] <utils-db> connecting /Users/mark/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/Backup/1d35a41b3adb8b335cc59362ad55ee88/F10A43B8-5032-4E21-A627-F26663F39304/Backup.db
+2022-08-25 20:21:40,133 DEBUG    [db.py:26] <utils-db> committed
+2022-08-25 20:21:40,446 DEBUG    [db.py:83] <utils-db> query: select * FROM WCContact WHERE m_nsRemark LIKE '%商务%' OR nickname LIKE '%商务%'

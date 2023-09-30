@@ -1,0 +1,42 @@
+syntax = "proto2";
+
+message BakChatMsgList {
+  required uint32 count = 1;
+  repeated BakChatMsgItem list = 2;
+}
+
+message BakChatMsgItem {
+  required uint32 type = 1;
+  optional string clientMsgId = 2;
+  required SKBuiltinString_t fromUserName = 3;
+  required SKBuiltinString_t toUserName = 4;
+  required SKBuiltinString_t content = 5;
+  required uint32 msgStatus = 6;
+  required uint32 clientMsgTime = 7;
+  optional string msgSource = 8;
+  required uint32 msgId = 9;
+  optional uint32 mediaIdCount = 10;
+  repeated SKBuiltinString_t mediaId = 11;
+  repeated SKBuiltinUint32_t mediaType = 12;
+  optional SKBuiltinBuffer_t buffer = 13;
+  optional uint32 bufferLength = 14;
+  optional uint32 bufferType = 15;
+  optional uint64 newMsgId = 16;
+  optional uint32 sequentId = 17;
+  optional int64 clientMsgMillTime = 18;
+  optional uint32 msgFlag = 19;
+}
+
+message SKBuiltinString_t {
+  optional string string = 1;
+}
+
+message SKBuiltinUint32_t {
+  required uint32 uiVal = 1;
+}
+
+message SKBuiltinBuffer_t {
+  required uint32 iLen = 1;
+  optional bytes buffer = 2;
+}
+

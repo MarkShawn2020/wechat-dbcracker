@@ -1,6 +1,6 @@
 [submodule "pysqlcipher3"]
-    path = pysqlcipher3
-    url = https://github.com/rigglemania/pysqlcipher3
+	path = pysqlcipher3
+	url = ./pysqlcipher3
 
 [submodule "sqlcipher"]
     path = sqlcipher
