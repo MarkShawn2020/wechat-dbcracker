@@ -102,6 +102,13 @@ tip: 对键的读取动作，会在登录时产生，因此需要先运行程序
 - python: 可以使用 `pysqlcipher`
 - nodejs: 可以使用 `node-sqlcipher`
 
+## 项目 todo
+
+- [ ] 尝试破解 3.8+ 的微信版本
+- [ ] 支持 iOS 端的破解（毕竟基于聊天记录的备份系统，移动端数据会更全）
+- [ ] 将整个流程更轻松的自动化
+- [ ] 做一个聊天记录展示的UI或者仿微信界面（已经正在进行，但是更希望解耦，可能会另外开个项目，以及需要最终确定是用什么技术栈实现，electron, flutter ?）
+
 ## 参考
 
 - 核心破解参考： nalzok/wechat-decipher-macos: DTrace scripts to extract chat history from WeChat on macOS, https://github.com/nalzok/wechat-decipher-macos/tree/main
