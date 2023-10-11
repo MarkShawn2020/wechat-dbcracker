@@ -1,15 +1,5 @@
+**/.idea
 Analysis/data/*
-
-# ----------------------
-# mark >>>
-# ----------------------
-
-.idea
-
-# ----------------------
-# mark <<<
-# ----------------------
-
 
 # Created by .ignore support plugin (hsz.mobi)
 ### Python template

@@ -40,7 +40,7 @@
 
 微信往期版本的下载地址：https://macdownload.informer.com/wechat/versions/
 
-![img.png](wechat-versions.png)
+![wechat-versions](./assets/wechat-versions.png)
 
 ### sqlcipher 依赖
 
@@ -77,41 +77,23 @@ csrutil disable
 
 ### 1. 打开mac微信，保持登录页面
 
-### 2. 运行监控程序
+### 2. 运行监控程序（注意运行的微信的版本与程序地址）
+
+![wechat-version](assets/wechat-version.png)
+
+tip: 需要确保运行正确的、版本对应的微信程序
 
 ```shell
 # comparing to `wechat-decipher-macos`, I make the script more robust.
-pgrep -f '^/Applications/WeChat.app/Contents/MacOS/WeChat' | xargs sudo wechat-decipher-macos/macos/dbcracker.d -p
+# 由于key是固定的，也可以把输出内容持久化，只需要在命令后面加上 `> data/dbcracker.log`
+pgrep -f /Applications/WeChat-3.6.0.app/Contents/MacOS/WeChat | xargs sudo core/dbcracker.d -p
 ```
 
 ### 3. 登录账号，确认是否有各种数据库键的输出
 
-类似如下：
+tip: 对键的读取动作，会在登录时产生，因此需要先运行程序，再登录。
 
-```text
-sqlcipher db path: '/Users/mark/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/KeyValue/1d35a41b3adb8b335cc59362ad55ee88/KeyValue.db'
-PRAGMA key = "x'b95e58f5e48a455f935963f7f8bdec37a0205f799d8c4465b4c00b7138f516263363959d13f82ce5b9e0c3a74af1df1e'"; PRAGMA cipher_compatibility = 3;
-
-sqlcipher db path: '/Users/mark/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/1d35a41b3adb8b335cc59362ad55ee88/Contact/wccontact_new2.db'
-PRAGMA key = "x'b95e58f5e48a455f935963f7f8bdec37a0205f799d8c4465b4c00b7138f51626b07475fbaa4b375dbc932419c1ee54d2'"; PRAGMA cipher_compatibility = 3;
-
-...
-```
-
-如果没有，提示SIP，则参见之前的步骤；
-
-如果没有，也不是SIP，则我也不知道啥原因，请联系我 :)
-
-如果有，则说明运行成功。
-
-### key持久化
-
-由于key是固定的，你可以把输出内容拷贝到`data/dbcracker.log`文件内：
-
-```shell
-# monitor into log file, so that to be read by our programme
-pgrep -f '^/Applications/WeChat.app/Contents/MacOS/WeChat' | xargs sudo wechat-decipher-macos/macos/dbcracker.d -p > data/dbcracker.log
-```
+![sqlcipher-track](assets/sqlcipher-track.png)
 
 ## 程序化
 
