@@ -113,6 +113,13 @@ PRAGMA key = "x'b95e58f5e48a455f935963f7f8bdec37a0205f799d8c4465b4c00b7138f51626
 pgrep -f '^/Applications/WeChat.app/Contents/MacOS/WeChat' | xargs sudo wechat-decipher-macos/macos/dbcracker.d -p > data/dbcracker.log
 ```
 
+## 程序化
+
+由于我们已经得到了各个数据库的存储地址、秘钥、版本等，我们便可以程序化的读取所有数据。
+
+- python: 可以使用 `pysqlcipher`
+- nodejs: 可以使用 `node-sqlcipher`
+
 ## 参考
 
 - 核心破解参考： nalzok/wechat-decipher-macos: DTrace scripts to extract chat history from WeChat on macOS, https://github.com/nalzok/wechat-decipher-macos/tree/main
