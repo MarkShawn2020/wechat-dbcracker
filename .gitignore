@@ -1,6 +1,7 @@
 dev
 sqlcipher
 
+**/.DS_Store
 **/.idea
 Analysis/data/*
 
