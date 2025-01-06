@@ -1,0 +1,16 @@
+{
+  "name": "wechat-dbcracker",
+  "version": "1.0.0",
+  "description": "WeChat database key management tools",
+  "scripts": {
+    "convert": "ts-node scripts/keys2toml.ts"
+  },
+  "dependencies": {
+    "@iarna/toml": "^2.2.5"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.6",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  }
+}

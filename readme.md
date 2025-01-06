@@ -40,7 +40,7 @@
 
 3.7 未测试。
 
-微信往期版本的下载地址：https://macdownload.informer.com/wechat/versions/
+微信往期版本的下载地址：[Older versions of WeChat (Mac) | Uptodown](https://wechat-for-mac.en.uptodown.com/mac/versions) 
 
 ![wechat-versions](assets/wechat-versions.png)
 
@@ -50,19 +50,20 @@ MacOS 上要配置好能读写 sqlcipher 的环境。
 
 ```shell
 # 1. check where is your `libcrypto.a`
-find /usr/local/Cellar -name libcrypto.a
+brew list openssl | grep libcrypto.a
+# 或者 find /usr/local/Cellar -name libcrypto.a
 
 # 2. use the libcrypto.a with openssl version >= 3
 LIBCRYPTO={YOUR-libcrypto.a}
 
 # 3. install sqlcipher
-git clone https://github.com/sqlcipher/sqlcipher
-bash -c "
+git submodule add https://github.com/sqlcipher/sqlcipher
 cd sqlcipher
 ./configure --enable-tempstore=yes CFLAGS="-DSQLITE_HAS_CODEC" \
 	LDFLAGS=$LIBCRYPTO --with-crypto-lib=none
-make && make install
-"
+make
+# need password
+sudo make install
 ```
 
 ### 关闭 SIP（可以google一下，需要按住 cmd + shift + R 进入安全模式），otherwise the dtrace can't be used
@@ -88,7 +89,7 @@ tip: 需要确保运行正确的、版本对应的微信程序
 ```shell
 # comparing to `wechat-decipher-macos`, I make the script more robust.
 # 由于key是固定的，也可以把输出内容持久化，只需要在命令后面加上 `> data/dbcracker.log`
-pgrep -f /Applications/WeChat-3.6.0.app/Contents/MacOS/WeChat | xargs sudo core/dbcracker.d -p
+pgrep -f /Applications/WeChat-3.6.0.app/Contents/MacOS/WeChat | xargs sudo core/dbcracker.d -p > .keys
 ```
 
 ### 3. 登录账号，确认是否有各种数据库键的输出
