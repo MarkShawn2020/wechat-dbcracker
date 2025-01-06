@@ -1,0 +1,219 @@
+[metadata]
+version = "1.0.0"
+generated_at = "2025-01-06T10:37:10.642Z"
+
+[[databases.1d35a41b3adb8b335cc59362ad55ee88]]
+path = "/Users/mark/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/KeyValue/1d35a41b3adb8b335cc59362ad55ee88/KeyValue.db"
+key = "x'9ab30be49b344171a35c10dc311bb7150005000bdde748c480a805a6ad8c4868b0db433169816fae00320db0a705c481'"
+cipher_compatibility = 3
+type = "1d35a41b3adb8b335cc59362ad55ee88"
+
+[[databases.WebTemplate]]
+path = "/Users/mark/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/1d35a41b3adb8b335cc59362ad55ee88/WebTemplate/webtemplate.db"
+key = "x'9ab30be49b344171a35c10dc311bb7150005000bdde748c480a805a6ad8c4868c33e6265d9ae7e380c7753ed9ac7355b'"
+cipher_compatibility = 3
+type = "WebTemplate"
+
+[[databases.Contact]]
+path = "/Users/mark/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/1d35a41b3adb8b335cc59362ad55ee88/Contact/wccontact_new2.db"
+key = "x'9ab30be49b344171a35c10dc311bb7150005000bdde748c480a805a6ad8c4868df746f286cd9f518e6d069b0baf77b27'"
+cipher_compatibility = 3
+type = "Contact"
+
+[[databases.Session]]
+path = "/Users/mark/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/1d35a41b3adb8b335cc59362ad55ee88/Session/session_new.db"
+key = "x'9ab30be49b344171a35c10dc311bb7150005000bdde748c480a805a6ad8c4868bc7c53b3c021add9550d61d94106047e'"
+cipher_compatibility = 3
+type = "Session"
+
+[[databases.Session]]
+path = "/Users/mark/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/1d35a41b3adb8b335cc59362ad55ee88/Session/session_new.db"
+key = "x'9ab30be49b344171a35c10dc311bb7150005000bdde748c480a805a6ad8c4868bc7c53b3c021add9550d61d94106047e'"
+cipher_compatibility = 3
+type = "Session"
+
+[[databases.Message]]
+path = "/Users/mark/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/1d35a41b3adb8b335cc59362ad55ee88/Message/msg_0.db"
+key = "x'9ab30be49b344171a35c10dc311bb7150005000bdde748c480a805a6ad8c48682eba43dd861d049aabd56b94b510198d'"
+cipher_compatibility = 3
+type = "Message"
+
+[[databases.Message]]
+path = "/Users/mark/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/1d35a41b3adb8b335cc59362ad55ee88/Message/msg_1.db"
+key = "x'9ab30be49b344171a35c10dc311bb7150005000bdde748c480a805a6ad8c486818d38db6a704e9a2389ddfc78f4bd980'"
+cipher_compatibility = 3
+type = "Message"
+
+[[databases.Message]]
+path = "/Users/mark/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/1d35a41b3adb8b335cc59362ad55ee88/Message/msg_2.db"
+key = "x'9ab30be49b344171a35c10dc311bb7150005000bdde748c480a805a6ad8c4868b05d813ff170b7bc39fbb095d7d79b2a'"
+cipher_compatibility = 3
+type = "Message"
+
+[[databases.Message]]
+path = "/Users/mark/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/1d35a41b3adb8b335cc59362ad55ee88/Message/msg_3.db"
+key = "x'9ab30be49b344171a35c10dc311bb7150005000bdde748c480a805a6ad8c48681bfa2b64552fe181e05cafc7e7a0daf1'"
+cipher_compatibility = 3
+type = "Message"
+
+[[databases.Message]]
+path = "/Users/mark/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/1d35a41b3adb8b335cc59362ad55ee88/Message/msg_4.db"
+key = "x'9ab30be49b344171a35c10dc311bb7150005000bdde748c480a805a6ad8c4868db8b4556f280cdb1c10efdc715758bfb'"
+cipher_compatibility = 3
+type = "Message"
+
+[[databases.Message]]
+path = "/Users/mark/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/1d35a41b3adb8b335cc59362ad55ee88/Message/msg_5.db"
+key = "x'9ab30be49b344171a35c10dc311bb7150005000bdde748c480a805a6ad8c4868b91451a47037d99470e973c4eb38f35d'"
+cipher_compatibility = 3
+type = "Message"
+
+[[databases.Message]]
+path = "/Users/mark/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/1d35a41b3adb8b335cc59362ad55ee88/Message/msg_6.db"
+key = "x'9ab30be49b344171a35c10dc311bb7150005000bdde748c480a805a6ad8c4868845e85651d708e089043486ff72d3e78'"
+cipher_compatibility = 3
+type = "Message"
+
+[[databases.Message]]
+path = "/Users/mark/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/1d35a41b3adb8b335cc59362ad55ee88/Message/msg_7.db"
+key = "x'9ab30be49b344171a35c10dc311bb7150005000bdde748c480a805a6ad8c48688160342ed7b8f584b81c353c5a05de98'"
+cipher_compatibility = 3
+type = "Message"
+
+[[databases.Message]]
+path = "/Users/mark/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/1d35a41b3adb8b335cc59362ad55ee88/Message/msg_8.db"
+key = "x'9ab30be49b344171a35c10dc311bb7150005000bdde748c480a805a6ad8c48686ab287139100185f4a710264a5b56711'"
+cipher_compatibility = 3
+type = "Message"
+
+[[databases.Message]]
+path = "/Users/mark/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/1d35a41b3adb8b335cc59362ad55ee88/Message/msg_9.db"
+key = "x'9ab30be49b344171a35c10dc311bb7150005000bdde748c480a805a6ad8c4868d52151909cf171a61a8da610a4a6c628'"
+cipher_compatibility = 3
+type = "Message"
+
+[[databases.Message]]
+path = "/Users/mark/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/1d35a41b3adb8b335cc59362ad55ee88/Message/msg_7.db"
+key = "x'9ab30be49b344171a35c10dc311bb7150005000bdde748c480a805a6ad8c48688160342ed7b8f584b81c353c5a05de98'"
+cipher_compatibility = 3
+type = "Message"
+
+[[databases.Message]]
+path = "/Users/mark/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/1d35a41b3adb8b335cc59362ad55ee88/Message/msg_0.db"
+key = "x'9ab30be49b344171a35c10dc311bb7150005000bdde748c480a805a6ad8c48682eba43dd861d049aabd56b94b510198d'"
+cipher_compatibility = 3
+type = "Message"
+
+[[databases.Message]]
+path = "/Users/mark/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/1d35a41b3adb8b335cc59362ad55ee88/Message/msg_0.db"
+key = "x'9ab30be49b344171a35c10dc311bb7150005000bdde748c480a805a6ad8c48682eba43dd861d049aabd56b94b510198d'"
+cipher_compatibility = 3
+type = "Message"
+
+[[databases.Message]]
+path = "/Users/mark/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/1d35a41b3adb8b335cc59362ad55ee88/Message/msg_1.db"
+key = "x'9ab30be49b344171a35c10dc311bb7150005000bdde748c480a805a6ad8c486818d38db6a704e9a2389ddfc78f4bd980'"
+cipher_compatibility = 3
+type = "Message"
+
+[[databases.brand]]
+path = "/Users/mark/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/1d35a41b3adb8b335cc59362ad55ee88/Message/brand/brandmsg.db"
+key = "x'9ab30be49b344171a35c10dc311bb7150005000bdde748c480a805a6ad8c486821c16cb8976930f5f2ffb15d2d6f50a0'"
+cipher_compatibility = 3
+type = "brand"
+
+[[databases.brand]]
+path = "/Users/mark/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/1d35a41b3adb8b335cc59362ad55ee88/Message/brand/brandmsg.db"
+key = "x'9ab30be49b344171a35c10dc311bb7150005000bdde748c480a805a6ad8c486821c16cb8976930f5f2ffb15d2d6f50a0'"
+cipher_compatibility = 3
+type = "brand"
+
+[[databases.brand]]
+path = "/Users/mark/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/1d35a41b3adb8b335cc59362ad55ee88/Message/brand/brandmsg.db"
+key = "x'9ab30be49b344171a35c10dc311bb7150005000bdde748c480a805a6ad8c486821c16cb8976930f5f2ffb15d2d6f50a0'"
+cipher_compatibility = 3
+type = "brand"
+
+[[databases.Group]]
+path = "/Users/mark/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/1d35a41b3adb8b335cc59362ad55ee88/Group/group_new.db"
+key = "x'9ab30be49b344171a35c10dc311bb7150005000bdde748c480a805a6ad8c48683947580a76bdce95565eb803bad706ed'"
+cipher_compatibility = 3
+type = "Group"
+
+[[databases.Favorites]]
+path = "/Users/mark/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/1d35a41b3adb8b335cc59362ad55ee88/Favorites/favorites.db"
+key = "x'9ab30be49b344171a35c10dc311bb7150005000bdde748c480a805a6ad8c4868bda582830e06fbd6928e2d616115790d'"
+cipher_compatibility = 3
+type = "Favorites"
+
+[[databases.MMLive]]
+path = "/Users/mark/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/1d35a41b3adb8b335cc59362ad55ee88/MMLive/live_main.db"
+key = "x'9ab30be49b344171a35c10dc311bb7150005000bdde748c480a805a6ad8c4868560046d473f3dab9fd1c736c7ac72ec0'"
+cipher_compatibility = 3
+type = "MMLive"
+
+[[databases.Data]]
+path = "/Users/mark/Library/Containers/com.tencent.xinWeChat/Data/Library/Caches/com.tencent.xinWeChat/2.0b4.0.9/1d35a41b3adb8b335cc59362ad55ee88/Sns/Data/sns.db"
+key = "x'9ab30be49b344171a35c10dc311bb7150005000bdde748c480a805a6ad8c48682f410ef3dfc9cf829fc014346f965f97'"
+cipher_compatibility = 3
+type = "Data"
+
+[[databases.Sync]]
+path = "/Users/mark/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/1d35a41b3adb8b335cc59362ad55ee88/Sync/oplog_1.1.db"
+key = "x'9ab30be49b344171a35c10dc311bb7150005000bdde748c480a805a6ad8c486840bc576d78bc3b85137c5bcf4d6a9055'"
+cipher_compatibility = 3
+type = "Sync"
+
+[[databases.Account]]
+path = "/Users/mark/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/1d35a41b3adb8b335cc59362ad55ee88/Account/Beta.db"
+key = "x'9ab30be49b344171a35c10dc311bb7150005000bdde748c480a805a6ad8c486898387d712dd16dd1a3eea4741465e653'"
+cipher_compatibility = 3
+type = "Account"
+
+[[databases.Stickers]]
+path = "/Users/mark/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/1d35a41b3adb8b335cc59362ad55ee88/Stickers/stickers.db"
+key = "x'9ab30be49b344171a35c10dc311bb7150005000bdde748c480a805a6ad8c4868b3a9f217a6b5f53ad6d7a61808acd1bf'"
+cipher_compatibility = 3
+type = "Stickers"
+
+[[databases.fts]]
+path = "/Users/mark/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/1d35a41b3adb8b335cc59362ad55ee88/Message/fts/ftsmessage.db"
+key = "x'1a5ed577443cc3e8daa9e521338b7a5fb82f2b14c3e893e79398d584eea26368fce803a855745e2beda8d033fc6a56ec'"
+cipher_compatibility = 3
+type = "fts"
+
+[[databases.fts]]
+path = "/Users/mark/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/1d35a41b3adb8b335cc59362ad55ee88/Message/fts/ftsmessage.db"
+key = "x'1a5ed577443cc3e8daa9e521338b7a5fb82f2b14c3e893e79398d584eea26368fce803a855745e2beda8d033fc6a56ec'"
+cipher_compatibility = 3
+type = "fts"
+
+[[databases.fts]]
+path = "/Users/mark/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/1d35a41b3adb8b335cc59362ad55ee88/Message/fts/ftsmessage.db"
+key = "x'1a5ed577443cc3e8daa9e521338b7a5fb82f2b14c3e893e79398d584eea26368fce803a855745e2beda8d033fc6a56ec'"
+cipher_compatibility = 3
+type = "fts"
+
+[[databases.fts]]
+path = "/Users/mark/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/1d35a41b3adb8b335cc59362ad55ee88/Message/fts/ftsmessage.db"
+key = "x'1a5ed577443cc3e8daa9e521338b7a5fb82f2b14c3e893e79398d584eea26368fce803a855745e2beda8d033fc6a56ec'"
+cipher_compatibility = 3
+type = "fts"
+
+[[databases.ftsfile]]
+path = "/Users/mark/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/1d35a41b3adb8b335cc59362ad55ee88/Message/ftsfile/ftsfilemessage.db"
+key = "x'5084026c28ba7407c92de9766c95ef7f2bc38e7194255f8cb5d0edcd2917929e1b256e8fd071d1746e92f11d2ea0ca02'"
+cipher_compatibility = 3
+type = "ftsfile"
+
+[[databases.mediaData]]
+path = "/Users/mark/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/1d35a41b3adb8b335cc59362ad55ee88/Message/mediaData/mediaData.db"
+key = "x'44e60bcb0b56332aafcc3257a9c1a75239826347bbf8fe4b5d3a3129d51640b872a45d34e4e34c5bef0a9f4caca81cce'"
+cipher_compatibility = 3
+type = "mediaData"
+
+[[databases.mediaData]]
+path = "/Users/mark/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/1d35a41b3adb8b335cc59362ad55ee88/Message/mediaData/mediaData.db"
+key = "x'44e60bcb0b56332aafcc3257a9c1a75239826347bbf8fe4b5d3a3129d51640b872a45d34e4e34c5bef0a9f4caca81cce'"
+cipher_compatibility = 3
+type = "mediaData"

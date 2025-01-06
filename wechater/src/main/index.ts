@@ -2,6 +2,7 @@ import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
+import fs from 'fs/promises'
 
 function createWindow(): void {
   // Create the browser window.
@@ -51,6 +52,18 @@ app.whenReady().then(() => {
 
   // IPC test
   ipcMain.on('ping', () => console.log('pong'))
+
+  // Register IPC handlers
+  ipcMain.handle('read-keys-toml', async () => {
+    try {
+      const keysPath = join(process.cwd(), '../keys.toml')
+      const content = await fs.readFile(keysPath, 'utf-8')
+      return content
+    } catch (error) {
+      console.error('Error reading keys.toml:', error)
+      throw error
+    }
+  })
 
   createWindow()
 
