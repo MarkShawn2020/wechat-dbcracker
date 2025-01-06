@@ -3,7 +3,9 @@ import { electronAPI } from '@electron-toolkit/preload'
 
 // Custom APIs for renderer
 const api = {
-  readKeysToml: (): Promise<string> => ipcRenderer.invoke('read-keys-toml')
+  readKeysToml: (): Promise<string> => ipcRenderer.invoke('read-keys-toml'),
+  openDatabase: (dbPath: string, key: string): Promise<string> => 
+    ipcRenderer.invoke('open-database', dbPath, key)
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to

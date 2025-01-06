@@ -3,6 +3,9 @@ import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import fs from 'fs/promises'
+import { SqlCipherReader } from './database/sqlcipher'
+
+const dbReader = new SqlCipherReader()
 
 function createWindow(): void {
   // Create the browser window.
@@ -61,6 +64,15 @@ app.whenReady().then(() => {
       return content
     } catch (error) {
       console.error('Error reading keys.toml:', error)
+      throw error
+    }
+  })
+
+  ipcMain.handle('open-database', async (_, dbPath: string, key: string) => {
+    try {
+      return await dbReader.readDatabase(dbPath, key)
+    } catch (error) {
+      console.error('Error opening database:', error)
       throw error
     }
   })

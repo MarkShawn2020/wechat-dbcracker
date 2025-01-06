@@ -9,5 +9,6 @@ interface Window {
   };
   api: {
     readKeysToml: () => Promise<string>;
+    openDatabase: (dbPath: string, key: string) => Promise<string>;
   };
 }

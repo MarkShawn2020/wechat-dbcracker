@@ -23,12 +23,6 @@ export async function loadDatabaseConfig(): Promise<DatabaseConfig> {
       return toml.parse(content) as DatabaseConfig
     }
 
-    // 如果 window.api 不可用，尝试使用 window.electron
-    if (window.electron?.ipcRenderer) {
-      const content = await window.electron.ipcRenderer.invoke('read-keys-toml')
-      return toml.parse(content) as DatabaseConfig
-    }
-
     throw new Error('No available IPC method found')
   } catch (error) {
     console.error('Failed to load database config:', error)
