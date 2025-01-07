@@ -53,6 +53,7 @@
     "@electron-toolkit/preload": "^3.0.1",
     "@electron-toolkit/utils": "^3.0.0",
     "better-sqlite3": "^11.7.2",
+    "better-sqlite3-multiple-ciphers": "^11.7.0",
     "electron-updater": "^6.1.7",
     "react-router-dom": "^7.1.1",
     "toml": "^3.0.0"
@@ -66,7 +67,7 @@
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.1",
-    "electron": "^31.0.2",
+    "electron": "^31.7.6",
     "electron-builder": "^24.13.3",
     "electron-rebuild": "^3.2.9",
     "electron-vite": "^2.3.0",

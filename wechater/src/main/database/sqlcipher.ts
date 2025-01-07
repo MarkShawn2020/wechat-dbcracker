@@ -1,5 +1,5 @@
-import Database from 'better-sqlite3'
-import type { Database as DatabaseType } from 'better-sqlite3'
+import type { Database as DatabaseType } from 'better-sqlite3-multiple-ciphers'
+import Database from 'better-sqlite3-multiple-ciphers'
 import { app } from 'electron'
 import path from 'path'
 
@@ -17,21 +17,16 @@ export class SqlCipherReader {
 
   async open(dbPath: string, key?: string): Promise<void> {
     try {
-      const binaryPath = this.getLibraryPath()
-
+      // dbPath = dbPath.replace('.db', '')
       console.log('opening database: %s', dbPath)
       this.db = new Database(dbPath, {
-        verbose: console.log,
-        nativeBinding: binaryPath
+        verbose: console.log // nativeBinding: binaryPath
       })
 
       if (key) {
         // WeChat SQLCipher configuration
-        this.db.pragma('cipher_compatibility = 3')
-        this.db.pragma('cipher_page_size = 1024')
-        this.db.pragma('kdf_iter = 64000')
-        this.db.pragma('cipher_hmac_algorithm = HMAC_SHA1')
-        this.db.pragma('cipher_kdf_algorithm = PBKDF2_HMAC_SHA1')
+        this.db.pragma(`cipher='sqlcipher'`)
+        this.db.pragma(`legacy=3`)
         this.db.pragma(`key = "${key}"`)
       }
 
@@ -88,7 +83,6 @@ export class SqlCipherReader {
           }
         } catch (error) {
           console.error(`Error reading table ${tableName}:`, error)
-          continue
         }
       }
 
@@ -121,21 +115,16 @@ export class SqlCipherReader {
     return tables.map((t) => t.name)
   }
 
-  private getTableInfo(tableName: string) {
-    if (!this.db) {
-      throw new Error('Database not opened')
-    }
-    return this.db.prepare(`PRAGMA table_info(${tableName})`).all()
-  }
-
   async queryTable(
     tableName: string,
-    query: string | {
-      limit?: number
-      offset?: number
-      where?: string
-      orderBy?: string
-    }
+    query:
+      | string
+      | {
+          limit?: number
+          offset?: number
+          where?: string
+          orderBy?: string
+        }
   ): Promise<TableSchema> {
     if (!this.db) {
       throw new Error('Database not opened')
@@ -169,6 +158,13 @@ export class SqlCipherReader {
       columns,
       rows: rows.map((row: any) => columns.map((col) => row[col]))
     }
+  }
+
+  private getTableInfo(tableName: string) {
+    if (!this.db) {
+      throw new Error('Database not opened')
+    }
+    return this.db.prepare(`PRAGMA table_info(${tableName})`).all()
   }
 
   private getLibraryPath(): string {

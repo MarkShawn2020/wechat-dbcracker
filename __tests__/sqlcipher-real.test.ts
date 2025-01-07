@@ -1,4 +1,4 @@
-import { SqlCipherReader } from '../sqlcipher'
+import { SqlCipherReader } from '../wechater/src/main/database/sqlcipher'
 
 describe('SqlCipherReader', () => {
   let reader: SqlCipherReader
