@@ -77,8 +77,8 @@ function convertToToml(keys: Record<string, DbKey[]>): string {
 // Main execution
 async function main() {
   try {
-    const inputPath = path.join(process.cwd(), '.keys')
-    const outputPath = path.join(process.cwd(), '.keys.toml')
+    const inputPath = path.join(process.cwd(), '../.keys')
+    const outputPath = path.join(process.cwd(), '../.keys.toml')
     
     const content = await fs.promises.readFile(inputPath, 'utf-8')
     const keys = parseKeys(content)

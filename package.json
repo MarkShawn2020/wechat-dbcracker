@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "WeChat database key management tools",
   "scripts": {
-    "convert": "ts-node scripts/keys2toml.ts",
     "test": "jest",
     "test:watch": "jest --watch"
   },
