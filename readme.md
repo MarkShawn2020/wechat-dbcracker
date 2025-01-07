@@ -66,7 +66,9 @@ make
 sudo make install
 ```
 
-### 关闭 SIP（可以google一下，需要按住 cmd + shift + R 进入安全模式），otherwise the dtrace can't be used
+### 关闭 SIP，otherwise the dtrace can't be used
+
+> 需要按住 cmd + shift + R 进入安全模式（Mac Studio 上长按电源键即可）
 
 ```shell
 # check SIP
