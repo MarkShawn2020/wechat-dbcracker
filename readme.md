@@ -36,13 +36,10 @@
 
 目前我们的 dtrace 脚本 以及整个 hook 的逻辑，需要确保 MacOS 微信客户端的版本在 **3.6以下**。
 
-3.8以上不可以，因为微信使用了多进程以及其他技术进行了重构。
-
-3.7 未测试。
+- 3.8以上 不可以（TODO: 微信使用了多进程以及其他技术进行了重构）
+- 3.7 未测试
 
 微信往期版本的下载地址：[Older versions of WeChat (Mac) | Uptodown](https://wechat-for-mac.en.uptodown.com/mac/versions) 
-
-![wechat-versions](assets/wechat-versions.png)
 
 ### sqlcipher 依赖
 
