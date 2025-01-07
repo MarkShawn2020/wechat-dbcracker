@@ -59,7 +59,7 @@ app.whenReady().then(() => {
   // Register IPC handlers
   ipcMain.handle('read-keys-toml', async () => {
     try {
-      const keysPath = join(process.cwd(), '../keys.toml')
+      const keysPath = join(process.cwd(), '../../keys.toml')
       const content = await fs.readFile(keysPath, 'utf-8')
       return content
     } catch (error) {

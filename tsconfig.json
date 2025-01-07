@@ -8,7 +8,7 @@
     "forceConsistentCasingInFileNames": true,
     "outDir": "./dist"
   },
-  "include": ["scripts/**/*", "wechater/**/*"],
+  "include": ["packages/scripts/**/*", "packages/wechater/**/*"],
   "exclude": ["node_modules"]
 }
  
