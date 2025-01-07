@@ -118,4 +118,4 @@ tip: 对键的读取动作，会在登录时产生，因此需要先运行程序
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=markshawn2020/wechat-dbcracker&type=Date)](https://star-history.com/#markshawn2020/wechat-dbcracker&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=cs-magic-open/wechat-dbcracker&type=Date)](https://star-history.com/#cs-magic-open/wechat-dbcracker&Date)
