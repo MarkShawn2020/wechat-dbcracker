@@ -1,6 +1,8 @@
 # 微信聊天记录获取之数据库破解
 
+## Star History
 
+[![Star History Chart](https://api.star-history.com/svg?repos=cs-magic-open/wechat-dbcracker&type=Date)](https://www.star-history.com/#cs-magic-open/wechat-dbcracker&Date)
 
 ## 项目目标
 
@@ -115,7 +117,3 @@ tip: 对键的读取动作，会在登录时产生，因此需要先运行程序
 
 - 核心破解参考： nalzok/wechat-decipher-macos: DTrace scripts to extract chat history from WeChat on macOS, https://github.com/nalzok/wechat-decipher-macos/tree/main
 - D 语言：The D Programming Language, https://docs.oracle.com/en/operating-systems/oracle-linux/dtrace-guide/dtrace-ref-TheDProgrammingLanguage.html#dt_dlang
-
-## Star History
-
-[![Star History Chart](https://api.star-history.com/svg?repos=cs-magic-open/wechat-dbcracker&type=Date)](https://star-history.com/#cs-magic-open/wechat-dbcracker&Date)
