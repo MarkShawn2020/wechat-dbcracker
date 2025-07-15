@@ -1,55 +1,89 @@
-import { DatabaseInfo } from '../types';
-import { useAtom } from 'jotai';
-import { keysFilePathAtom } from '../store/atoms';
-import { Info, Database, Key, FolderOpen } from 'lucide-react';
+import {DatabaseInfo} from '../types';
+import {useAtom} from 'jotai';
+import {keysFilePathAtom} from '../store/atoms';
+import {Database, FolderOpen, Info, Key} from 'lucide-react';
 
 interface DatabaseInfoProps {
-  database: DatabaseInfo;
+    database: DatabaseInfo;
 }
 
-export function DatabaseInfoPanel({ database }: DatabaseInfoProps) {
-  const [keysPath] = useAtom(keysFilePathAtom);
+export function DatabaseInfoPanel({database}: DatabaseInfoProps) {
+    const [keysPath] = useAtom(keysFilePathAtom);
 
-  return (
-    <div className="p-4 border-b border-gray-200 bg-gray-50">
-      <div className="flex items-center space-x-2 mb-3">
-        <Info className="h-5 w-5 text-blue-600" />
-        <h3 className="text-sm font-medium text-gray-900">Database Information</h3>
-      </div>
-      
-      <div className="space-y-2 text-xs">
-        <div className="flex items-center space-x-2">
-          <Database className="h-3 w-3 text-gray-500" />
-          <span className="text-gray-600">Name:</span>
-          <span className="font-medium text-gray-900">{database.filename}</span>
+    return (
+        <div className="p-6 bg-slate-50">
+            <div className="flex items-center space-x-2 mb-4">
+                <div className="p-1.5 bg-blue-100 rounded-lg">
+                    <Info className="h-4 w-4 text-blue-600"/>
+                </div>
+                <h3 className="text-sm font-semibold text-slate-900">Database Information</h3>
+            </div>
+
+            <div className="space-y-4">
+                <div className="bg-white rounded-lg p-4 space-y-3">
+                    <div className="flex items-center space-x-3">
+                        <div className="p-1.5 bg-slate-100 rounded-lg">
+                            <Database className="h-3 w-3 text-slate-600"/>
+                        </div>
+                        <div className="flex-1">
+                            <p className="text-xs text-slate-500 font-medium">Database Name</p>
+                            <p className="text-sm text-slate-900 font-semibold">{database.filename}</p>
+                        </div>
+                    </div>
+
+                    <div className="flex items-center space-x-3">
+                        <div className="p-1.5 bg-slate-100 rounded-lg">
+                            <span className="text-xs text-slate-600 font-bold">T</span>
+                        </div>
+                        <div className="flex-1">
+                            <p className="text-xs text-slate-500 font-medium">Database Type</p>
+                            <p className="text-sm text-slate-900 font-semibold">{database.db_type}</p>
+                        </div>
+                    </div>
+
+                    <div className="flex items-center space-x-3">
+                        <div className="p-1.5 bg-slate-100 rounded-lg">
+                            <span className="text-xs text-slate-600 font-bold">S</span>
+                        </div>
+                        <div className="flex-1">
+                            <p className="text-xs text-slate-500 font-medium">File Size</p>
+                            <p className="text-sm text-slate-900 font-semibold">
+                                {database.size ? `${(database.size / 1024).toFixed(1)} KB` : 'Unknown'}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="bg-white rounded-lg p-4">
+                    <div className="flex items-start space-x-3">
+                        <div className="p-1.5 bg-amber-100 rounded-lg">
+                            <Key className="h-3 w-3 text-amber-600"/>
+                        </div>
+                        <div className="flex-1 min-w-0">
+                            <p className="text-xs text-slate-500 font-medium mb-1">Encryption Key</p>
+                            <div className="bg-slate-100 rounded-lg p-2">
+                                <p className="font-mono text-xs text-slate-700 break-all" title={database.key}>
+                                    {database.key.substring(0, 32)}...
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="bg-white rounded-lg p-4">
+                    <div className="flex items-start space-x-3">
+                        <div className="p-1.5 bg-slate-100 rounded-lg">
+                            <FolderOpen className="h-3 w-3 text-slate-600"/>
+                        </div>
+                        <div className="flex-1 min-w-0">
+                            <p className="text-xs text-slate-500 font-medium mb-1">File Path</p>
+                            <div className="bg-slate-100 rounded-lg p-2">
+                                <p className="font-mono text-xs text-slate-700 break-all">{database.path}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        
-        <div className="flex items-center space-x-2">
-          <span className="text-gray-600">Type:</span>
-          <span className="font-medium text-gray-900">{database.db_type}</span>
-        </div>
-        
-        <div className="flex items-center space-x-2">
-          <span className="text-gray-600">Size:</span>
-          <span className="font-medium text-gray-900">
-            {database.size ? `${(database.size / 1024).toFixed(1)} KB` : 'Unknown'}
-          </span>
-        </div>
-        
-        <div className="flex items-center space-x-2">
-          <Key className="h-3 w-3 text-gray-500" />
-          <span className="text-gray-600">Key:</span>
-          <span className="font-mono text-gray-900 truncate" title={database.key}>
-            {database.key.substring(0, 20)}...
-          </span>
-        </div>
-        
-        <div className="flex items-start space-x-2">
-          <FolderOpen className="h-3 w-3 text-gray-500 mt-0.5" />
-          <span className="text-gray-600">Path:</span>
-          <span className="text-gray-900 text-wrap break-all">{database.path}</span>
-        </div>
-      </div>
-    </div>
-  );
+    );
 }

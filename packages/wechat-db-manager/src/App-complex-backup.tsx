@@ -1,9 +1,9 @@
 import {useEffect, useState} from 'react';
 import {Navigation, NavigationTab} from './components/Navigation';
-import {SettingsPage} from './pages/SettingsPage';
-import {OverviewPage} from './pages/OverviewPage';
-import {DatabasePage} from './pages/DatabasePage';
 import {ChatPage} from './pages/ChatPage';
+import {DatabasePage} from './pages/DatabasePage';
+import {OverviewPage} from './pages/OverviewPage';
+import {SettingsPage} from './pages/SettingsPage';
 import {useAtom} from 'jotai';
 import {initializePersistedStateAtom} from './store/atoms';
 import './App.css';
@@ -28,11 +28,7 @@ function App() {
             case 'settings':
                 return <SettingsPage/>;
             default:
-                return (
-                    <div className="flex-1 flex items-center justify-center">
-                        <h2 className="text-xl text-gray-600">页面加载中...</h2>
-                    </div>
-                );
+                return <OverviewPage/>;
         }
     };
 

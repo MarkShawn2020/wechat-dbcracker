@@ -130,7 +130,12 @@ impl DatabaseManager {
         let last_modified = std::fs::metadata(path)
             .ok()
             .and_then(|m| m.modified().ok())
-            .map(|t| format!("{:?}", t));
+            .and_then(|t| {
+                t.duration_since(std::time::UNIX_EPOCH)
+                    .ok()
+                    .map(|d| d.as_secs())
+            })
+            .map(|timestamp| timestamp.to_string());
         
         Ok(DatabaseInfo {
             id,
