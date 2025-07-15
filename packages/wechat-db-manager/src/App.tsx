@@ -1,50 +1,111 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import { invoke } from "@tauri-apps/api/core";
-import "./App.css";
+import { useState, useEffect } from 'react';
+import { DatabaseInfo, TableInfo } from './types';
+import { DatabaseList } from './components/DatabaseList';
+import { TableList } from './components/TableList';
+import { TableView } from './components/TableView';
+import { FileManager } from './components/FileManager';
+import { DatabaseInfoPanel } from './components/DatabaseInfo';
+import { StatusBar } from './components/StatusBar';
+import { WelcomeGuide } from './components/WelcomeGuide';
+import { Database } from 'lucide-react';
+import { useAtom } from 'jotai';
+import { initializePersistedStateAtom, selectedDatabaseAtom } from './store/atoms';
+import './App.css';
 
 function App() {
-  const [greetMsg, setGreetMsg] = useState("");
-  const [name, setName] = useState("");
+  const [selectedDatabase, setSelectedDatabase] = useAtom(selectedDatabaseAtom);
+  const [selectedTable, setSelectedTable] = useState<TableInfo | null>(null);
+  const [, initializeState] = useAtom(initializePersistedStateAtom);
 
-  async function greet() {
-    // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-    setGreetMsg(await invoke("greet", { name }));
-  }
+  // 初始化持久化状态
+  useEffect(() => {
+    initializeState();
+  }, [initializeState]);
+
+  const handleSelectDatabase = (database: DatabaseInfo) => {
+    setSelectedDatabase(database);
+    setSelectedTable(null);
+  };
+
+  const handleFileLoaded = () => {
+    // 文件加载后清除选择状态
+    setSelectedDatabase(null);
+    setSelectedTable(null);
+  };
+
+  const handleSelectTable = (table: TableInfo) => {
+    setSelectedTable(table);
+  };
 
   return (
-    <main className="container">
-      <h1>Welcome to Tauri + React</h1>
+    <div className="h-screen bg-gray-100 flex">
+      {/* Sidebar */}
+      <div className="w-96 bg-white border-r border-gray-200 flex flex-col">
+        {/* Header */}
+        <div className="p-4 border-b border-gray-200">
+          <div className="flex items-center space-x-2">
+            <Database className="h-6 w-6 text-blue-600" />
+            <h1 className="text-xl font-semibold text-gray-900">WeChat DB Manager</h1>
+          </div>
+        </div>
 
-      <div className="row">
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo vite" alt="Vite logo" />
-        </a>
-        <a href="https://tauri.app" target="_blank">
-          <img src="/tauri.svg" className="logo tauri" alt="Tauri logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        {/* File Manager */}
+        <FileManager onFileLoaded={handleFileLoaded} />
+        
+        {/* Welcome Guide */}
+        <WelcomeGuide />
+        
+        {/* Database List */}
+        <div className="flex-1 overflow-auto">
+          <DatabaseList
+            onSelectDatabase={handleSelectDatabase}
+            selectedDatabaseId={selectedDatabase?.id}
+          />
+        </div>
+
+        {/* Database Info */}
+        {selectedDatabase && (
+          <DatabaseInfoPanel database={selectedDatabase} />
+        )}
+
+        {/* Table List */}
+        {selectedDatabase && (
+          <div className="border-t border-gray-200 max-h-64 overflow-auto">
+            <TableList
+              database={selectedDatabase}
+              onSelectTable={handleSelectTable}
+              selectedTableName={selectedTable?.name}
+            />
+          </div>
+        )}
+        
+        {/* Status Bar */}
+        <StatusBar />
       </div>
-      <p>Click on the Tauri, Vite, and React logos to learn more.</p>
 
-      <form
-        className="row"
-        onSubmit={(e) => {
-          e.preventDefault();
-          greet();
-        }}
-      >
-        <input
-          id="greet-input"
-          onChange={(e) => setName(e.currentTarget.value)}
-          placeholder="Enter a name..."
-        />
-        <button type="submit">Greet</button>
-      </form>
-      <p>{greetMsg}</p>
-    </main>
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col">
+        {selectedDatabase && selectedTable ? (
+          <TableView
+            database={selectedDatabase}
+            table={selectedTable}
+          />
+        ) : (
+          <div className="flex-1 flex items-center justify-center">
+            <div className="text-center">
+              <Database className="h-16 w-16 text-gray-400 mx-auto mb-4" />
+              <h2 className="text-xl font-semibold text-gray-900 mb-2">
+                WeChat Database Manager
+              </h2>
+              <p className="text-gray-600 max-w-md">
+                Select a database from the sidebar to view its tables and data.
+                Load your WeChat database keys to get started.
+              </p>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
   );
 }
 
