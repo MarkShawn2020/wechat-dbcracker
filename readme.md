@@ -56,7 +56,11 @@ brew list openssl | grep libcrypto.a
 LIBCRYPTO={YOUR-libcrypto.a}
 
 # 3. install sqlcipher
-git submodule add https://github.com/sqlcipher/sqlcipher
+# If cloning this repo for the first time, use:
+# git clone --recursive https://github.com/cs-magic-open/wechat-dbcracker
+# 
+# If already cloned, initialize the submodule:
+git submodule update --init
 cd sqlcipher
 ./configure --enable-tempstore=yes CFLAGS="-DSQLITE_HAS_CODEC" \
 	LDFLAGS=$LIBCRYPTO --with-crypto-lib=none
