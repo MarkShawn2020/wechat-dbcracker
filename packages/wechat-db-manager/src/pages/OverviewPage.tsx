@@ -126,8 +126,8 @@ export function OverviewPage() {
     const hasData = databases.length > 0;
 
     return (
-        <div className="flex-1 bg-gray-50 p-6 overflow-y-auto">
-            <div className="max-w-7xl mx-auto space-y-6">
+        <div className="h-full bg-gray-50 overflow-y-auto">
+            <div className="max-w-7xl mx-auto space-y-6 p-6">
                 {/* Header */}
                 <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
                     <div className="flex items-center space-x-4">

@@ -3,7 +3,8 @@ import {Navigation, NavigationTab} from './components/Navigation';
 import {SettingsPage} from './pages/SettingsPage';
 import {OverviewPage} from './pages/OverviewPage';
 import {DatabasePage} from './pages/DatabasePage';
-import {ChatPage} from './pages/ChatPage';
+import {ChatPage} from './pages/ChatPageOptimized';
+import {DiagnosticPage} from './pages/DiagnosticPage';
 import {useAtom} from 'jotai';
 import {initializePersistedStateAtom} from './store/atoms';
 import './App.css';
@@ -23,6 +24,8 @@ function App() {
                 return <ChatPage/>;
             case 'database':
                 return <DatabasePage/>;
+            case 'diagnostic':
+                return <DiagnosticPage/>;
             case 'overview':
                 return <OverviewPage/>;
             case 'settings':
@@ -37,17 +40,19 @@ function App() {
     };
 
     return (
-        <div className="h-screen bg-gray-50 flex flex-col">
-            {/* Main Content Area */}
-            <div className="flex-1 flex flex-col min-h-0">
+        <div className="h-screen bg-gray-50 flex flex-col overflow-hidden">
+            {/* Main Content Area - 确保可以收缩并包含滚动 */}
+            <div className="flex-1 min-h-0 overflow-hidden">
                 {renderActiveTab()}
             </div>
 
-            {/* Bottom Navigation */}
-            <Navigation
-                activeTab={activeTab}
-                onTabChange={setActiveTab}
-            />
+            {/* Bottom Navigation - 固定在底部，不允许收缩 */}
+            <div className="flex-shrink-0">
+                <Navigation
+                    activeTab={activeTab}
+                    onTabChange={setActiveTab}
+                />
+            </div>
         </div>
     );
 }

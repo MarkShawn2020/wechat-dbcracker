@@ -35,11 +35,11 @@ export function DatabasePage() {
     );
 
     return (
-        <div className="flex-1 flex bg-gray-50">
-            {/* 左侧面板 - 数据库和表格列表 */}
-            <div className="w-96 bg-white border-r border-gray-200 flex flex-col">
-                {/* 头部 */}
-                <div className="p-6 border-b border-gray-100">
+        <div className="h-full flex bg-gray-50 overflow-hidden">
+            {/* 左侧面板 - 数据库和表格列表，独立滚动 */}
+            <div className="w-96 bg-white border-r border-gray-200 flex flex-col overflow-hidden">
+                {/* 头部 - 不滚动 */}
+                <div className="flex-shrink-0 p-6 border-b border-gray-100">
                     <div className="flex items-center space-x-3 mb-4">
                         <div className="p-2 bg-blue-100 rounded-lg">
                             <Database className="h-5 w-5 text-blue-600"/>
@@ -64,11 +64,15 @@ export function DatabasePage() {
                 </div>
 
                 {/* 欢迎指引 */}
-                {databases.length === 0 && <WelcomeGuide/>}
+                {databases.length === 0 && (
+                    <div className="flex-1 overflow-y-auto min-h-0">
+                        <WelcomeGuide/>
+                    </div>
+                )}
 
-                {/* 数据库列表 */}
-                <div className="flex-1 overflow-y-auto min-h-0">
-                    {databases.length > 0 && (
+                {/* 数据库列表 - 独立滚动 */}
+                {databases.length > 0 && (
+                    <div className="flex-1 overflow-y-auto min-h-0">
                         <div className="p-3">
                             <div className="flex items-center justify-between mb-3 px-3">
                                 <h2 className="text-sm font-semibold text-gray-700 flex items-center">
@@ -76,8 +80,8 @@ export function DatabasePage() {
                                     数据库列表
                                 </h2>
                                 <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
-                  {filteredDatabases.length}
-                </span>
+                                    {filteredDatabases.length}
+                                </span>
                             </div>
                             <DatabaseList
                                 onSelectDatabase={handleSelectDatabase}
@@ -85,12 +89,12 @@ export function DatabasePage() {
                                 databases={filteredDatabases}
                             />
                         </div>
-                    )}
-                </div>
+                    </div>
+                )}
 
-                {/* 表格列表 */}
+                {/* 表格列表 - 不滚动的固定区域 */}
                 {selectedDatabase && (
-                    <div className="border-t border-gray-100 bg-white">
+                    <div className="flex-shrink-0 border-t border-gray-100 bg-white">
                         <div className="p-3">
                             <div className="flex items-center justify-between mb-3 px-3">
                                 <h3 className="text-sm font-semibold text-gray-700 flex items-center">
@@ -110,19 +114,17 @@ export function DatabasePage() {
                 )}
             </div>
 
-            {/* 中央面板 - 表格内容 */}
-            <div className="flex-1 flex flex-col">
+            {/* 中央面板 - 表格内容，独立滚动 */}
+            <div className="flex-1 flex flex-col overflow-hidden">
                 {selectedDatabase && selectedTable ? (
                     <TableView
                         database={selectedDatabase}
                         table={selectedTable}
                     />
                 ) : (
-                    <div
-                        className="flex-1 flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-50">
+                    <div className="flex-1 flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-50 overflow-y-auto">
                         <div className="text-center max-w-md p-8 bg-white rounded-2xl shadow-lg">
-                            <div
-                                className="p-6 bg-blue-50 rounded-full w-24 h-24 mx-auto mb-6 flex items-center justify-center">
+                            <div className="p-6 bg-blue-50 rounded-full w-24 h-24 mx-auto mb-6 flex items-center justify-center">
                                 {selectedDatabase ? (
                                     <Table className="h-12 w-12 text-blue-500"/>
                                 ) : (
@@ -151,13 +153,15 @@ export function DatabasePage() {
                 )}
             </div>
 
-            {/* 右侧面板 - 属性 */}
-            <div className="w-80 border-l border-gray-200 bg-white">
-                <PropertyPanel
-                    selectedDatabase={selectedDatabase}
-                    selectedTable={selectedTable}
-                />
-            </div>
+            {/* 右侧面板 - 属性，独立滚动，仅在选中数据库时显示 */}
+            {selectedDatabase && (
+                <div className="w-80 border-l border-gray-200 bg-white overflow-hidden">
+                    <PropertyPanel
+                        selectedDatabase={selectedDatabase}
+                        selectedTable={selectedTable}
+                    />
+                </div>
+            )}
         </div>
     );
 }
