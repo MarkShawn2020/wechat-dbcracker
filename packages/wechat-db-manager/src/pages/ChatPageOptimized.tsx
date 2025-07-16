@@ -41,35 +41,9 @@ export function ChatPage() {
     try {
       actions.startLoadingContacts();
       
-      // 策略1：极速加载，先显示联系人
-      if (messageDbs.length === 0) {
-        // 没有消息数据库时，直接加载联系人
-        const contacts = await ChatDataService.loadContactsFast(contactDb);
-        actions.contactsLoaded(contacts);
-        return;
-      }
-      
-      // 策略2：启发式快速排序（推荐）
-      try {
-        const contacts = await ChatDataService.loadContactsWithHeuristicSorting(contactDb, messageDbs);
-        actions.contactsLoaded(contacts);
-      } catch (heuristicErr) {
-        console.warn('启发式排序失败，回退到快速加载:', heuristicErr);
-        
-        // 回退策略：先快速显示，后台更新
-        const contacts = await ChatDataService.loadContactsFast(contactDb);
-        actions.contactsLoaded(contacts);
-        
-        // 后台异步更新排序
-        actions.contactsUpdatingInBackground();
-        ChatDataService.updateContactsActivity(
-          contacts, 
-          messageDbs,
-          (updatedContacts) => {
-            actions.contactsLoaded(updatedContacts);
-          }
-        );
-      }
+      // 使用启发式排序加载联系人
+      const contacts = await ChatDataService.loadContactsWithHeuristicSorting(contactDb, messageDbs);
+      actions.contactsLoaded(contacts);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : '加载联系人失败';
       actions.contactsError(errorMessage);
@@ -221,12 +195,6 @@ export function ChatPage() {
         <div className="flex-shrink-0 p-6 border-b border-gray-100">
           <div className="flex items-center justify-between mb-4">
             <h1 className="text-xl font-bold text-gray-900">聊天记录</h1>
-            {state.isUpdatingInBackground && (
-              <div className="flex items-center space-x-2 text-xs text-blue-600">
-                <Loader2 className="h-3 w-3 animate-spin" />
-                <span>排序中...</span>
-              </div>
-            )}
           </div>
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />

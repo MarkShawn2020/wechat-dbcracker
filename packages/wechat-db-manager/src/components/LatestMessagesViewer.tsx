@@ -47,33 +47,75 @@ export function LatestMessagesViewer() {
             console.log(`\n--- 查询表: ${chatTable.name} ---`);
             
             try {
-              // 直接查询最新的几条消息
+              // 先查表结构，了解真实字段名
+              const structureResult = await dbManager.queryTable(messageDb.id, chatTable.name, 5);
+              console.log(`表 ${chatTable.name} 的字段:`, structureResult.columns);
+              
+              if (structureResult.rows.length > 0) {
+                console.log(`表 ${chatTable.name} 样本数据:`, structureResult.rows[0]);
+              }
+
+              // 动态识别字段
+              const columns = structureResult.columns.map(col => col.toLowerCase());
+              
+              // 查找联系人标识字段
+              const contactFields = ['talker', 'username', 'fromuser', 'touser', 'sender', 'userid', 'wxid'];
+              const contactField = contactFields.find(field => columns.includes(field)) || 
+                                  structureResult.columns.find(col => 
+                                    contactFields.some(field => col.toLowerCase().includes(field))
+                                  );
+
+              // 查找内容字段
+              const contentFields = ['content', 'message', 'msg', 'text'];
+              const contentField = contentFields.find(field => columns.includes(field)) ||
+                                  structureResult.columns.find(col => 
+                                    contentFields.some(field => col.toLowerCase().includes(field))
+                                  );
+
+              // 查找时间字段
+              const timeFields = ['timestamp', 'createtime', 'time', 'msgtime', 'sendtime'];
+              const timeField1 = timeFields.find(field => columns.includes(field)) ||
+                                structureResult.columns.find(col => 
+                                  timeFields.some(field => col.toLowerCase().includes(field))
+                                );
+              const timeField2 = timeFields.filter(field => columns.includes(field))[1] ||
+                                structureResult.columns.filter(col => 
+                                  timeFields.some(field => col.toLowerCase().includes(field))
+                                )[1];
+
+              console.log(`字段映射 - 联系人: ${contactField}, 内容: ${contentField}, 时间: ${timeField1}, ${timeField2}`);
+
+              if (!contactField || !contentField || !timeField1) {
+                console.warn(`表 ${chatTable.name} 缺少必要字段，跳过`);
+                console.log(`所有字段:`, structureResult.columns);
+                continue;
+              }
+
+              // 构建动态查询
               const query = `
-                SELECT talker, content, timestamp, createtime, sender, receiver, type, msgtype
+                SELECT ${contactField}, ${contentField}, ${timeField1}${timeField2 ? `, ${timeField2}` : ''}
                 FROM ${chatTable.name} 
-                WHERE talker IS NOT NULL AND talker != ''
-                ORDER BY timestamp DESC, createtime DESC 
+                WHERE ${contactField} IS NOT NULL AND ${contactField} != ''
+                ORDER BY ${timeField1} DESC${timeField2 ? `, ${timeField2} DESC` : ''}
                 LIMIT 20
               `;
 
+              console.log(`执行查询:`, query);
               const result = await dbManager.executeQuery(messageDb.id, query);
               console.log(`表 ${chatTable.name} 查询到 ${result.rows.length} 条记录`);
 
               if (result.rows.length > 0) {
-                console.log(`样本数据:`, result.rows[0]);
+                console.log(`查询结果样本:`, result.rows[0]);
                 
-                // 按talker分组，每个talker只取最新的一条
-                const talkerMessages = new Map<string, LatestMessage>();
+                // 按联系人分组，每个联系人只取最新的一条
+                const contactMessages = new Map<string, LatestMessage>();
                 
                 result.rows.forEach((row, index) => {
                   const talker = String(row[0] || '').trim();
                   const content = String(row[1] || '').trim();
                   const timestamp = row[2] || row[3] || Date.now();
-                  const sender = row[4] ? String(row[4]) : undefined;
-                  const receiver = row[5] ? String(row[5]) : undefined;
-                  const msgType = row[6] || row[7];
 
-                  if (talker && content) {
+                  if (talker && content && content !== '空') {
                     const timestampNum = typeof timestamp === 'number' ? timestamp : parseInt(String(timestamp)) || Date.now();
                     
                     const message: LatestMessage = {
@@ -83,22 +125,22 @@ export function LatestMessagesViewer() {
                       content: content.substring(0, 100), // 限制内容长度
                       timestamp: new Date(timestampNum * (timestampNum > 9999999999 ? 1 : 1000)).toISOString(),
                       timestampNum,
-                      sender,
-                      receiver,
-                      msgType: msgType ? String(msgType) : undefined
+                      sender: contactField !== 'talker' ? talker : undefined,
+                      receiver: undefined,
+                      msgType: undefined
                     };
 
-                    // 只保留每个talker的最新消息
-                    const existing = talkerMessages.get(talker);
+                    // 只保留每个联系人的最新消息
+                    const existing = contactMessages.get(talker);
                     if (!existing || timestampNum > existing.timestampNum) {
-                      talkerMessages.set(talker, message);
+                      contactMessages.set(talker, message);
                     }
                   }
                 });
 
                 // 添加到总列表
-                allMessages.push(...Array.from(talkerMessages.values()));
-                console.log(`表 ${chatTable.name} 提取了 ${talkerMessages.size} 个不同talker的最新消息`);
+                allMessages.push(...Array.from(contactMessages.values()));
+                console.log(`表 ${chatTable.name} 提取了 ${contactMessages.size} 个不同联系人的最新消息`);
               }
 
             } catch (tableErr) {

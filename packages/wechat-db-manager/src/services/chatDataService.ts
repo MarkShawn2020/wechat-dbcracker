@@ -159,62 +159,27 @@ export class ChatDataService {
                           ORDER BY timestamp DESC, createtime DESC 
                           LIMIT ${Math.floor(sampleSize / chatTables.length)}`;
             
-            try {
-              const result = await dbManager.executeQuery(messageDb.id, query);
+            const result = await dbManager.executeQuery(messageDb.id, query);
+            
+            result.rows.forEach(row => {
+              // 提取联系人标识符和时间戳
+              const talker = row[0];
+              const sender = row[1]; 
+              const fromuser = row[2];
+              const timestamp = row[3] || row[4];
               
-              result.rows.forEach(row => {
-                // 提取联系人标识符和时间戳
-                const talker = row[0];
-                const sender = row[1]; 
-                const fromuser = row[2];
-                const timestamp = row[3] || row[4];
+              if (timestamp) {
+                const timestampStr = String(timestamp);
+                const contactIds = [talker, sender, fromuser].filter(Boolean);
                 
-                if (timestamp) {
-                  const timestampStr = String(timestamp);
-                  const contactIds = [talker, sender, fromuser].filter(Boolean);
-                  
-                  contactIds.forEach(contactId => {
-                    const currentTime = contactActivityMap.get(contactId);
-                    if (!currentTime || timestampStr > currentTime) {
-                      contactActivityMap.set(contactId, timestampStr);
-                    }
-                  });
-                }
-              });
-            } catch (queryErr) {
-              // 如果查询失败，回退到简单的表查询
-              console.warn(`查询表 ${chatTable.name} 失败，回退到简单查询:`, queryErr);
-              const result = await dbManager.queryTable(messageDb.id, chatTable.name, Math.min(Math.floor(sampleSize / chatTables.length), 500));
-              
-              // 简单解析，提取联系人活跃度
-              result.rows.forEach(row => {
-                const timestampCols = result.columns
-                  .map((col, idx) => col.toLowerCase().includes('time') ? idx : -1)
-                  .filter(idx => idx !== -1);
-                
-                const contactCols = result.columns
-                  .map((col, idx) => 
-                    ['talker', 'sender', 'fromuser', 'receiver'].some(field => 
-                      col.toLowerCase().includes(field)
-                    ) ? idx : -1
-                  )
-                  .filter(idx => idx !== -1);
-                
-                const timestamp = timestampCols.length > 0 ? row[timestampCols[0]] : null;
-                if (timestamp) {
-                  const timestampStr = String(timestamp);
-                  contactCols.forEach(colIdx => {
-                    const contactId = row[colIdx];
-                    if (contactId) {
-                      const currentTime = contactActivityMap.get(String(contactId));
-                      if (!currentTime || timestampStr > currentTime) {
-                        contactActivityMap.set(String(contactId), timestampStr);
-                      }
-                    }
-                  });
-                }
-              });
-            }
+                contactIds.forEach(contactId => {
+                  const currentTime = contactActivityMap.get(contactId);
+                  if (!currentTime || timestampStr > currentTime) {
+                    contactActivityMap.set(contactId, timestampStr);
+                  }
+                });
+              }
+            });
           } catch (tableErr) {
             console.warn(`处理聊天表 ${chatTable.name} 失败:`, tableErr);
           }
@@ -280,56 +245,6 @@ export class ChatDataService {
     });
   }
   
-  /**
-   * 极速加载：先显示联系人，懒加载活跃度
-   */
-  static async loadContactsFast(contactDb: DatabaseInfo): Promise<EnhancedContact[]> {
-    return this.loadContacts(contactDb);
-  }
-  
-  /**
-   * 后台更新活跃度信息
-   */
-  static async updateContactsActivity(
-    contacts: EnhancedContact[],
-    messageDbs: DatabaseInfo[],
-    onUpdate: (contacts: EnhancedContact[]) => void
-  ): Promise<void> {
-    try {
-      const activityMap = await this.getActiveContactsHeuristic(messageDbs, 1000);
-      
-      const updatedContacts = contacts.map(contact => {
-        const identifiers = [contact.originalId, contact.username].filter(Boolean);
-        let lastActiveTime: string | undefined;
-        
-        for (const identifier of identifiers) {
-          const time = activityMap.get(identifier);
-          if (time && (!lastActiveTime || time > lastActiveTime)) {
-            lastActiveTime = time;
-          }
-        }
-        
-        return { ...contact, lastActiveTime };
-      });
-      
-      // 重新排序
-      const sortedContacts = updatedContacts.sort((a, b) => {
-        const aTime = a.lastActiveTime;
-        const bTime = b.lastActiveTime;
-        
-        if (aTime && bTime) {
-          return new Date(bTime).getTime() - new Date(aTime).getTime();
-        }
-        if (aTime && !bTime) return -1;
-        if (!aTime && bTime) return 1;
-        return a.displayName.localeCompare(b.displayName, 'zh-CN');
-      });
-      
-      onUpdate(sortedContacts);
-    } catch (err) {
-      console.warn('后台更新联系人活跃度失败:', err);
-    }
-  }
   
   /**
    * 检查是否已连接到数据库

@@ -27,9 +27,6 @@ interface ChatState {
   
   // 搜索状态
   searchTerm: string;
-  
-  // 后台更新状态
-  isUpdatingInBackground: boolean;
 }
 
 // 统一动作定义
@@ -37,7 +34,6 @@ type ChatAction =
   | { type: 'START_LOADING_CONTACTS' }
   | { type: 'CONTACTS_LOADED'; contacts: EnhancedContact[] }
   | { type: 'CONTACTS_ERROR'; error: string }
-  | { type: 'CONTACTS_UPDATING_IN_BACKGROUND' } // 后台更新联系人排序
   | { type: 'SELECT_CONTACT'; contact: EnhancedContact | null }
   | { type: 'START_LOADING_MESSAGES'; contactId: string }
   | { type: 'MESSAGES_LOADED'; contactId: string; messages: EnhancedMessage[] }
@@ -62,14 +58,7 @@ function chatReducer(state: ChatState, action: ChatAction): ChatState {
         ...state,
         contactsPhase: 'ready',
         contacts: action.contacts,
-        contactsError: null,
-        isUpdatingInBackground: false
-      };
-      
-    case 'CONTACTS_UPDATING_IN_BACKGROUND':
-      return {
-        ...state,
-        isUpdatingInBackground: true
+        contactsError: null
       };
       
     case 'CONTACTS_ERROR':
@@ -181,8 +170,7 @@ const initialState: ChatState = {
   contactsError: null,
   messagesError: null,
   connectedDatabases: new Set(),
-  searchTerm: '',
-  isUpdatingInBackground: false
+  searchTerm: ''
 };
 
 // 统一状态管理Hook
@@ -238,9 +226,6 @@ export function useChatState() {
     
     contactsError: useCallback((error: string) => 
       dispatch({ type: 'CONTACTS_ERROR', error }), []),
-    
-    contactsUpdatingInBackground: useCallback(() => 
-      dispatch({ type: 'CONTACTS_UPDATING_IN_BACKGROUND' }), []),
     
     selectContact: useCallback((contact: EnhancedContact | null) => 
       dispatch({ type: 'SELECT_CONTACT', contact }), []),

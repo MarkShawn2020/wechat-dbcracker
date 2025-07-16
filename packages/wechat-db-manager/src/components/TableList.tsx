@@ -96,13 +96,11 @@ export function TableList({database, onSelectTable, selectedTableName}: TableLis
     }
 
     return (
-        <div className="p-4">
-            <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold text-gray-900">Tables</h3>
-                <div className="flex items-center space-x-2">
-                    <div className="h-2 w-2 bg-green-500 rounded-full"/>
-                    <span className="text-sm text-gray-600">Connected</span>
-                </div>
+        <div className="p-3">
+            {/* 连接状态指示 */}
+            <div className="flex items-center space-x-2 mb-4 px-3">
+                <div className="h-2 w-2 bg-green-500 rounded-full"/>
+                <span className="text-xs text-gray-600">已连接</span>
             </div>
 
             <div className="space-y-1">
@@ -111,24 +109,26 @@ export function TableList({database, onSelectTable, selectedTableName}: TableLis
                         key={table.name}
                         onClick={() => onSelectTable(table)}
                         className={clsx(
-                            'p-3 rounded-lg border cursor-pointer transition-colors',
+                            'p-3 rounded-xl border cursor-pointer transition-all duration-200 hover:shadow-sm',
                             selectedTableName === table.name
-                                ? 'border-blue-500 bg-blue-50'
+                                ? 'border-blue-500 bg-blue-50 shadow-sm ring-1 ring-blue-100'
                                 : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
                         )}
                     >
                         <div className="flex items-center justify-between">
                             <div className="flex items-center space-x-2">
-                                <Table className="h-4 w-4 text-gray-600"/>
-                                <span className="font-medium text-gray-900">{table.name}</span>
+                                <div className="p-1 bg-slate-100 rounded">
+                                    <Table className="h-3 w-3 text-slate-600"/>
+                                </div>
+                                <span className="font-medium text-gray-900 text-sm">{table.name}</span>
                             </div>
 
                             <div className="flex items-center space-x-3 text-xs text-gray-500">
                                 <div className="flex items-center space-x-1">
-                                    <Hash className="h-3 w-3"/>
-                                    <span>{formatRowCount(table.row_count)} rows</span>
+                                    <Hash className="h-2.5 w-2.5"/>
+                                    <span>{formatRowCount(table.row_count)}</span>
                                 </div>
-                                <div className="text-gray-400">{table.columns.length} cols</div>
+                                <div className="text-gray-400">{table.columns.length} 列</div>
                             </div>
                         </div>
                     </div>
