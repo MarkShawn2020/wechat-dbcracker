@@ -207,7 +207,7 @@ export class ChatDataService {
     
     // 为联系人匹配活跃度信息
     const contactsWithActivity = contacts.map(contact => {
-      const identifiers = [contact.originalId, contact.username].filter(Boolean);
+      const identifiers = [contact.originalId, contact.username].filter(Boolean) as string[];
       let lastActiveTime: string | undefined;
       
       // 找到该联系人的最新活跃时间
@@ -243,6 +243,19 @@ export class ChatDataService {
       // 都不活跃：按显示名排序
       return a.displayName.localeCompare(b.displayName, 'zh-CN');
     });
+  }
+
+  /**
+   * 仅加载有聊天记录的联系人 - 用于聊天页面
+   */
+  static async loadContactsWithChatHistory(
+    contactDb: DatabaseInfo,
+    messageDbs: DatabaseInfo[]
+  ): Promise<EnhancedContact[]> {
+    const contactsWithActivity = await this.loadContactsWithHeuristicSorting(contactDb, messageDbs);
+    
+    // 只返回有聊天记录的联系人（lastActiveTime存在）
+    return contactsWithActivity.filter(contact => contact.lastActiveTime);
   }
   
   

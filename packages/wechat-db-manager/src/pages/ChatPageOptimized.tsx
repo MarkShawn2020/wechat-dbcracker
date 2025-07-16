@@ -41,8 +41,8 @@ export function ChatPage() {
     try {
       actions.startLoadingContacts();
       
-      // 使用启发式排序加载联系人
-      const contacts = await ChatDataService.loadContactsWithHeuristicSorting(contactDb, messageDbs);
+      // 加载有聊天记录的联系人
+      const contacts = await ChatDataService.loadContactsWithChatHistory(contactDb, messageDbs);
       actions.contactsLoaded(contacts);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : '加载联系人失败';
@@ -456,14 +456,14 @@ export function ChatPage() {
               </p>
               <div className="mt-6 space-y-3">
                 <div className="flex items-center justify-center space-x-2">
-                  <span className="text-sm text-gray-500">共有</span>
+                  <span className="text-sm text-gray-500">有聊天记录</span>
                   <span className="text-lg font-bold text-blue-600">{state.contacts.length}</span>
                   <span className="text-sm text-gray-500">个联系人</span>
                 </div>
                 {state.contacts.length > 0 && (
                   <div className="text-center space-y-1">
                     <div className="text-xs text-gray-500">
-                      有聊天记录: {state.contacts.filter(c => c.lastActiveTime).length} 个
+                      按最新消息时间排序
                     </div>
                     <div className="text-xs text-gray-500">
                       消息数据库: {messageDbs.length} 个

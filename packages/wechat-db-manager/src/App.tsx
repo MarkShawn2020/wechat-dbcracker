@@ -4,6 +4,7 @@ import {SettingsPage} from './pages/SettingsPage';
 import {OverviewPage} from './pages/OverviewPage';
 import {DatabasePage} from './pages/DatabasePage';
 import {ChatPage} from './pages/ChatPageOptimized';
+import {ContactsPage} from './pages/ContactsPage';
 import {DiagnosticPage} from './pages/DiagnosticPage';
 import {useAtom} from 'jotai';
 import {initializePersistedStateAtom} from './store/atoms';
@@ -22,6 +23,8 @@ function App() {
         switch (activeTab) {
             case 'chat':
                 return <ChatPage/>;
+            case 'contacts':
+                return <ContactsPage/>;
             case 'database':
                 return <DatabasePage/>;
             case 'diagnostic':
