@@ -59,7 +59,7 @@ export function ContactMessageMatcher() {
 
                 // 为每个联系人加载消息
                 try {
-                    const messages = await ChatDataService.loadMessages(contact, messageDbs, contacts);
+                    const messages = await ChatDataService.loadMessagesOptimized(contact, contacts);
                     result.messagesFound = messages.length;
 
                     // 取前5条消息作为样本

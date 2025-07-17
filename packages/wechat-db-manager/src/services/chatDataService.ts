@@ -2,6 +2,7 @@ import {dbManager} from '../api';
 import {ContactParser, EnhancedContact} from '../utils/contactParser';
 import {EnhancedMessage, MessageParser} from '../utils/messageParser';
 import {WeChatTableMatcher} from '../utils/wechatTableMatcher';
+import {TableMappingService} from './tableMappingService';
 import {DatabaseInfo} from '../types';
 
 export class ChatDataService {
@@ -59,8 +60,17 @@ export class ChatDataService {
                 console.log(`数据库 ${messageDb.filename} 中找到 ${validChatTables.length} 个有效聊天表:`,
                     validChatTables.map(t => t.name));
 
-                // 遍历所有有效的 chat 表，查找该联系人的消息
-                for (const chatTable of validChatTables) {
+                // 首先尝试使用MD5映射找到对应的聊天表
+                const matchedTables = WeChatTableMatcher.findMatchingChatTables(contact, validChatTables);
+                console.log(`为联系人 ${contact.displayName} 找到 ${matchedTables.length} 个匹配的聊天表:`, 
+                    matchedTables.map(t => t.name));
+
+                // 如果找到匹配的表，优先使用匹配的表
+                const tablesToCheck = matchedTables.length > 0 ? matchedTables : validChatTables;
+                console.log(`将检查 ${tablesToCheck.length} 个聊天表`);
+
+                // 遍历需要检查的聊天表
+                for (const chatTable of tablesToCheck) {
                     console.log(`检查聊天表: ${chatTable.name}`);
 
                     try {
@@ -384,6 +394,166 @@ export class ChatDataService {
      */
     static getConnectedDatabases(): string[] {
         return Array.from(this.connectedDatabases);
+    }
+
+    /**
+     * 优化版：加载指定联系人的消息（使用表映射服务）
+     * 直接定位到包含聊天记录的数据库文件，避免遍历所有数据库
+     */
+    static async loadMessagesOptimized(
+        contact: EnhancedContact,
+        allContacts: EnhancedContact[]
+    ): Promise<EnhancedMessage[]> {
+        console.log(`🔍 开始加载联系人 ${contact.displayName} 的聊天记录（优化版）`);
+        
+        const mappingService = TableMappingService.getInstance();
+        
+        // 检查映射服务是否已初始化
+        if (!mappingService.isReady()) {
+            console.warn('⚠️ 表映射服务未初始化，无法使用优化加载');
+            return [];
+        }
+
+        const allMessages: EnhancedMessage[] = [];
+        let globalMessageIndex = 0;
+
+        try {
+            // 直接查找联系人对应的聊天表
+            const chatTableMappings = mappingService.findChatTablesForContact(contact);
+            
+            if (chatTableMappings.length === 0) {
+                console.log(`📭 未找到联系人 ${contact.displayName} 的聊天表`);
+                return [];
+            }
+
+            console.log(`📋 找到 ${chatTableMappings.length} 个相关聊天表`);
+
+            // 遍历每个匹配的聊天表
+            for (const mapping of chatTableMappings) {
+                console.log(`📖 读取表: ${mapping.tableName} (${mapping.databaseFilename})`);
+                
+                try {
+                    // 确保数据库已连接
+                    await this.ensureConnected(mapping.databaseId);
+
+                    // 验证表是否有效
+                    const isValid = await WeChatTableMatcher.validateChatTable(
+                        mapping.databaseId,
+                        mapping.tableName,
+                        dbManager
+                    );
+
+                    if (!isValid) {
+                        console.log(`⚠️ 表 ${mapping.tableName} 验证失败，跳过`);
+                        continue;
+                    }
+
+                    // 分批加载消息
+                    const batchSize = 1000;
+                    let offset = 0;
+                    let hasMore = true;
+                    let tableMessageCount = 0;
+
+                    while (hasMore) {
+                        const result = await dbManager.queryTable(
+                            mapping.databaseId, 
+                            mapping.tableName, 
+                            batchSize, 
+                            offset
+                        );
+
+                        if (result.rows.length === 0) {
+                            break;
+                        }
+
+                        // 解析消息
+                        const messagesData = MessageParser.parseMessages(
+                            result,
+                            contact,
+                            allContacts,
+                            mapping.databaseId,
+                            globalMessageIndex
+                        );
+
+                        if (messagesData.length > 0) {
+                            allMessages.push(...messagesData);
+                            tableMessageCount += messagesData.length;
+                            globalMessageIndex += messagesData.length;
+                        }
+
+                        offset += batchSize;
+                        hasMore = result.rows.length === batchSize;
+
+                        // 避免无限循环
+                        if (offset > 100000) {
+                            console.warn(`⚠️ 表 ${mapping.tableName} 数据量过大，停止加载`);
+                            break;
+                        }
+                    }
+
+                    console.log(`✓ 表 ${mapping.tableName} 加载完成，找到 ${tableMessageCount} 条消息`);
+
+                } catch (tableError) {
+                    console.warn(`❌ 读取表 ${mapping.tableName} 失败:`, tableError);
+                }
+            }
+
+            // 按时间排序
+            allMessages.sort((a, b) => {
+                const timeA = a.timestamp || 0;
+                const timeB = b.timestamp || 0;
+                return timeA - timeB;
+            });
+
+            console.log(`🎉 联系人 ${contact.displayName} 聊天记录加载完成，总计 ${allMessages.length} 条消息`);
+            return allMessages;
+
+        } catch (error) {
+            console.error(`❌ 加载联系人 ${contact.displayName} 聊天记录失败:`, error);
+            return [];
+        }
+    }
+
+    /**
+     * 初始化表映射服务
+     */
+    static async initializeTableMapping(databases: DatabaseInfo[]): Promise<void> {
+        console.log('🚀 初始化表映射服务...');
+        const mappingService = TableMappingService.getInstance();
+        await mappingService.initializeMapping(databases);
+        console.log('✅ 表映射服务初始化完成');
+    }
+
+    /**
+     * 获取表映射统计信息
+     */
+    static getTableMappingStats() {
+        const mappingService = TableMappingService.getInstance();
+        return mappingService.getChatTablesStats();
+    }
+
+    /**
+     * 调试方法：获取详细的表映射状态
+     */
+    static getDetailedMappingStatus() {
+        const mappingService = TableMappingService.getInstance();
+        return mappingService.getDetailedStatus();
+    }
+
+    /**
+     * 调试方法：打印所有聊天表映射
+     */
+    static debugPrintChatTables() {
+        const mappingService = TableMappingService.getInstance();
+        mappingService.debugPrintChatTables();
+    }
+
+    /**
+     * 调试方法：检查特定联系人的映射
+     */
+    static debugContactMapping(contact: EnhancedContact) {
+        const mappingService = TableMappingService.getInstance();
+        mappingService.debugContactMapping(contact);
     }
 
     /**

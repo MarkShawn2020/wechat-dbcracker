@@ -14,6 +14,7 @@ export interface EnhancedContact {
     lastActiveTime?: string; // 最后活跃时间
     isBlocked?: boolean;     // 是否被屏蔽
     isFriend?: boolean;      // 是否为好友
+    originalId?: string;     // 原始ID（M_NSUSRNAME等）用于MD5映射
 }
 
 export class ContactParser {
@@ -98,8 +99,8 @@ export class ContactParser {
             nickname: ['nickname', 'nick_name', 'displayname', 'display_name', 'name'],
             realname: ['realname', 'real_name', 'fullname', 'full_name'],
 
-            // ID相关字段
-            username: ['username', 'user_name', 'wxid', 'wx_id', 'userid', 'user_id'],
+            // ID相关字段 - 添加M_NSUSRNAME支持
+            username: ['M_NSUSRNAME', 'm_nsusrname', 'MUSRNAME', 'musrname', 'username', 'user_name', 'wxid', 'wx_id', 'userid', 'user_id'],
             contactid: ['contactid', 'contact_id', 'id', 'talker'],
 
             // 头像相关字段
@@ -159,6 +160,9 @@ export class ContactParser {
         // 生成唯一ID
         const contactId = getValue('contactid') || getValue('username') || displayName || `contact_${index}`;
 
+        // 保留原始ID和M_NSUSRNAME用于调试和MD5映射
+        const originalId = getValue('username') || getValue('contactid');
+
         // 判断联系人类型
         const contactType = this.determineContactType(displayName, username);
 
@@ -175,7 +179,8 @@ export class ContactParser {
             contactType,
             lastActiveTime: getValue('lastactive'),
             isBlocked: this.parseBoolean(getValue('blocked')),
-            isFriend: contactType === 'user'
+            isFriend: contactType === 'user',
+            originalId: originalId // 添加原始ID用于MD5映射
         };
     }
 

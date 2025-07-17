@@ -100,7 +100,7 @@ export function ChatPage() {
 
         try {
             actions.startLoadingMessages(contact.id);
-            const messages = await ChatDataService.loadMessages(contact, messageDbs, state.contacts);
+            const messages = await ChatDataService.loadMessagesOptimized(contact, state.contacts);
             actions.messagesLoaded(contact.id, messages);
         } catch (err) {
             const errorMessage = err instanceof Error ? err.message : '加载消息失败';

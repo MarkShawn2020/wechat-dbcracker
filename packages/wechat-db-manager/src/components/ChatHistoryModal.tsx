@@ -55,9 +55,8 @@ export function ChatHistoryModal({
 
             console.log(`开始加载联系人 ${contact.displayName} 的消息...`);
 
-            const loadedMessages = await ChatDataService.loadMessages(
+            const loadedMessages = await ChatDataService.loadMessagesOptimized(
                 contact,
-                messageDbs,
                 allContacts
             );
 
