@@ -4,11 +4,11 @@ import {DatabaseList} from '../components/DatabaseList';
 import {TableList} from '../components/TableList';
 import {ContextPanel} from '../components/ContextPanel';
 import {WelcomeGuide} from '../components/WelcomeGuide';
-import {Database, Layers, Search, Table, RotateCcw} from 'lucide-react';
+import {Database, Layers, RotateCcw, Search, Table} from 'lucide-react';
 import {useAtom} from 'jotai';
 import {databasesAtom, selectedDatabaseAtom, selectedTableAtom, thirdColumnModeAtom} from '../store/atoms';
 import {Panel, PanelGroup, PanelResizeHandle} from 'react-resizable-panels';
-import {resetPanelLayout, hasCustomLayout} from '../utils/layoutUtils';
+import {hasCustomLayout, resetPanelLayout} from '../utils/layoutUtils';
 
 export function DatabasePage() {
     const [selectedDatabase, setSelectedDatabase] = useAtom(selectedDatabaseAtom);
@@ -53,8 +53,8 @@ export function DatabasePage() {
 
     return (
         <div className="h-full bg-gray-50">
-            <PanelGroup 
-                direction="horizontal" 
+            <PanelGroup
+                direction="horizontal"
                 autoSaveId="database-page-layout"
                 onLayout={() => {
                     // 当面板布局改变时，检查是否需要显示重置按钮
@@ -62,9 +62,9 @@ export function DatabasePage() {
                 }}
             >
                 {/* 第一列 - 数据库列表 */}
-                <Panel 
-                    defaultSize={30} 
-                    minSize={20} 
+                <Panel
+                    defaultSize={30}
+                    minSize={20}
                     maxSize={50}
                     className="bg-white border-r border-gray-200"
                 >
@@ -81,7 +81,7 @@ export function DatabasePage() {
                                         <p className="text-xs text-gray-600">Database Management</p>
                                     </div>
                                 </div>
-                                
+
                                 {/* 重置布局按钮 */}
                                 {showResetButton && (
                                     <button
@@ -89,7 +89,7 @@ export function DatabasePage() {
                                         className="flex items-center space-x-1 px-2 py-1 text-xs text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
                                         title="重置面板布局到默认设置"
                                     >
-                                        <RotateCcw className="h-3 w-3" />
+                                        <RotateCcw className="h-3 w-3"/>
                                         <span>重置布局</span>
                                     </button>
                                 )}
@@ -97,7 +97,8 @@ export function DatabasePage() {
 
                             {/* 搜索框 */}
                             <div className="relative">
-                                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400"/>
+                                <Search
+                                    className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400"/>
                                 <input
                                     type="text"
                                     placeholder="搜索数据库..."
@@ -139,14 +140,16 @@ export function DatabasePage() {
                     </div>
                 </Panel>
 
-                <PanelResizeHandle className="w-1 bg-gray-200 hover:bg-blue-400 active:bg-blue-500 transition-colors cursor-col-resize relative group">
-                    <div className="absolute inset-y-0 left-1/2 transform -translate-x-1/2 w-1 group-hover:w-1 group-active:w-1 transition-all" />
+                <PanelResizeHandle
+                    className="w-1 bg-gray-200 hover:bg-blue-400 active:bg-blue-500 transition-colors cursor-col-resize relative group">
+                    <div
+                        className="absolute inset-y-0 left-1/2 transform -translate-x-1/2 w-1 group-hover:w-1 group-active:w-1 transition-all"/>
                 </PanelResizeHandle>
 
                 {/* 第二列 - 表格列表 */}
-                <Panel 
-                    defaultSize={25} 
-                    minSize={15} 
+                <Panel
+                    defaultSize={25}
+                    minSize={15}
                     maxSize={40}
                     className="bg-white border-r border-gray-200"
                 >
@@ -168,9 +171,11 @@ export function DatabasePage() {
                             </div>
                         </div>
                     ) : (
-                        <div className="h-full flex items-center justify-center bg-gradient-to-br from-gray-50 to-slate-50">
+                        <div
+                            className="h-full flex items-center justify-center bg-gradient-to-br from-gray-50 to-slate-50">
                             <div className="text-center max-w-sm p-6">
-                                <div className="p-4 bg-gray-100 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                                <div
+                                    className="p-4 bg-gray-100 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
                                     <Table className="h-8 w-8 text-gray-400"/>
                                 </div>
                                 <h3 className="text-lg font-semibold text-gray-900 mb-2">表格列表</h3>
@@ -182,17 +187,19 @@ export function DatabasePage() {
                     )}
                 </Panel>
 
-                <PanelResizeHandle className="w-1 bg-gray-200 hover:bg-blue-400 active:bg-blue-500 transition-colors cursor-col-resize relative group">
-                    <div className="absolute inset-y-0 left-1/2 transform -translate-x-1/2 w-1 group-hover:w-1 group-active:w-1 transition-all" />
+                <PanelResizeHandle
+                    className="w-1 bg-gray-200 hover:bg-blue-400 active:bg-blue-500 transition-colors cursor-col-resize relative group">
+                    <div
+                        className="absolute inset-y-0 left-1/2 transform -translate-x-1/2 w-1 group-hover:w-1 group-active:w-1 transition-all"/>
                 </PanelResizeHandle>
 
                 {/* 第三列 - 上下文面板（数据库属性或表格数据） */}
-                <Panel 
-                    defaultSize={45} 
-                    minSize={30} 
+                <Panel
+                    defaultSize={45}
+                    minSize={30}
                     maxSize={65}
                 >
-                    <ContextPanel 
+                    <ContextPanel
                         selectedDatabase={selectedDatabase}
                         selectedTable={selectedTable}
                         mode={thirdColumnMode}

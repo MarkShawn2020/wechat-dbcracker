@@ -3,27 +3,27 @@ import {useAtom} from 'jotai';
 import {databasesAtom, loadingAtom} from '../store/atoms';
 import {DB_TYPE_COLORS, DB_TYPE_LABELS} from '../types';
 import {
-  AlertCircle,
-  BarChart3,
-  Calendar,
-  CheckCircle,
-  Clock,
-  Database,
-  Globe,
-  HardDrive,
-  Heart,
-  Image,
-  Info,
-  Key,
-  MessageSquare,
-  Network,
-  PieChart,
-  Radio,
-  Search,
-  Share2,
-  Sticker,
-  TrendingUp,
-  Users
+    AlertCircle,
+    BarChart3,
+    Calendar,
+    CheckCircle,
+    Clock,
+    Database,
+    Globe,
+    HardDrive,
+    Heart,
+    Image,
+    Info,
+    Key,
+    MessageSquare,
+    Network,
+    PieChart,
+    Radio,
+    Search,
+    Share2,
+    Sticker,
+    TrendingUp,
+    Users
 } from 'lucide-react';
 
 interface DatabaseStats {

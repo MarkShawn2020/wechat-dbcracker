@@ -5,14 +5,16 @@ import {OverviewPage} from './pages/OverviewPage';
 import {DatabasePage} from './pages/DatabasePage';
 import {ChatPage} from './pages/ChatPageOptimized';
 import {ContactsPage} from './pages/ContactsPage';
-import {DiagnosticPage} from './pages/DiagnosticPage';
+import {AutoConnectIndicator} from './components/AutoConnectIndicator';
 import {useAtom} from 'jotai';
 import {initializePersistedStateAtom} from './store/atoms';
+import {useAutoConnect} from './hooks/useAutoConnect';
 import './App.css';
 
 function App() {
-    const [activeTab, setActiveTab] = useState<NavigationTab>('overview');
+    const [activeTab, setActiveTab] = useState<NavigationTab>('settings');
     const [, initializeState] = useAtom(initializePersistedStateAtom);
+    const autoConnect = useAutoConnect();
 
     // 初始化持久化状态
     useEffect(() => {
@@ -27,8 +29,6 @@ function App() {
                 return <ContactsPage/>;
             case 'database':
                 return <DatabasePage/>;
-            case 'diagnostic':
-                return <DiagnosticPage/>;
             case 'overview':
                 return <OverviewPage/>;
             case 'settings':
@@ -44,6 +44,19 @@ function App() {
 
     return (
         <div className="h-screen bg-gray-50 flex flex-col overflow-hidden">
+            {/* Auto Connect Indicator - 顶部状态条 */}
+            {(autoConnect.isAutoConnecting || autoConnect.autoConnectError) && (
+                <div className="flex-shrink-0">
+                    <AutoConnectIndicator
+                        isConnecting={autoConnect.isAutoConnecting}
+                        progress={autoConnect.autoConnectProgress}
+                        error={autoConnect.autoConnectError}
+                        onRetry={autoConnect.triggerAutoConnect}
+                        onDismiss={autoConnect.clearError}
+                    />
+                </div>
+            )}
+
             {/* Main Content Area - 确保可以收缩并包含滚动 */}
             <div className="flex-1 min-h-0 overflow-hidden">
                 {renderActiveTab()}

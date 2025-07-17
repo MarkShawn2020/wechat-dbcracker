@@ -1,6 +1,6 @@
-import {BarChart3, Database, MessageSquare, Settings, Search, Users} from 'lucide-react';
+import {BarChart3, Bug, Database, MessageSquare, Search, Settings, Users} from 'lucide-react';
 
-export type NavigationTab = 'chat' | 'contacts' | 'database' | 'overview' | 'diagnostic' | 'settings';
+export type NavigationTab = 'chat' | 'contacts' | 'database' | 'overview' | 'diagnostic' | 'settings' | 'chatdebug';
 
 interface NavigationProps {
     activeTab: NavigationTab;
@@ -20,6 +20,12 @@ export function Navigation({activeTab, onTabChange}: NavigationProps) {
             name: '联系人',
             icon: Users,
             description: '查看所有联系人'
+        },
+        {
+            id: 'chatdebug' as const,
+            name: '聊天调试',
+            icon: Bug,
+            description: '调试聊天记录加载问题'
         },
         {
             id: 'database' as const,

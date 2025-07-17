@@ -1,12 +1,23 @@
 import {useEffect, useRef, useState} from 'react';
 import {QueryResult} from '../types';
 import {dbManager} from '../api';
-import {ChevronRight, Clock, Loader2, MessageSquare, Search, Users, AlertCircle, CheckCircle, XCircle, ArrowLeft} from 'lucide-react';
+import {
+    AlertCircle,
+    ArrowLeft,
+    CheckCircle,
+    ChevronRight,
+    Clock,
+    Loader2,
+    MessageSquare,
+    Search,
+    Users,
+    XCircle
+} from 'lucide-react';
 import {useAtom} from 'jotai';
 import {databasesAtom} from '../store/atoms';
-import {Avatar, AvatarWithName, MessageAvatar} from '../components/Avatar';
+import {Avatar, MessageAvatar} from '../components/Avatar';
 import {ContactParser, EnhancedContact} from '../utils/contactParser';
-import {MessageParser, EnhancedMessage} from '../utils/messageParser';
+import {EnhancedMessage, MessageParser} from '../utils/messageParser';
 
 // 使用增强的联系人和消息类型
 
@@ -38,20 +49,20 @@ export function ChatPage() {
     const messageDbs = databases.filter(db => db.db_type === 'Message');
 
     const addDebugInfo = (step: string, status: 'pending' | 'success' | 'error', message: string, data?: any) => {
-        setDebugInfo(prev => [...prev, { step, status, message, data }]);
+        setDebugInfo(prev => [...prev, {step, status, message, data}]);
         console.log(`[DEBUG] ${step}: ${status} - ${message}`, data);
     };
 
     const addMessageDebugInfo = (step: string, status: 'pending' | 'success' | 'error', message: string, data?: any) => {
-        setMessageDebugInfo(prev => [...prev, { step, status, message, data }]);
+        setMessageDebugInfo(prev => [...prev, {step, status, message, data}]);
         console.log(`[DEBUG] ${step}: ${status} - ${message}`, data);
     };
 
     useEffect(() => {
         if (!contactsLoaded && contactDb) {
-            addDebugInfo('初始化', 'success', `找到 ${databases.length} 个数据库`, { 
-                contactDb: contactDb?.filename, 
-                messageDbs: messageDbs.map(db => db.filename) 
+            addDebugInfo('初始化', 'success', `找到 ${databases.length} 个数据库`, {
+                contactDb: contactDb?.filename,
+                messageDbs: messageDbs.map(db => db.filename)
             });
             loadContacts();
         } else if (!contactDb) {
@@ -73,7 +84,7 @@ export function ChatPage() {
             setError(null);
             setDebugInfo([]);
             setContactsLoaded(false);
-            
+
             if (!connectedDatabases.has(contactDb.id)) {
                 addDebugInfo('连接数据库', 'pending', `连接到 ${contactDb.filename}`);
                 await dbManager.connectDatabase(contactDb.id);
@@ -122,9 +133,9 @@ export function ChatPage() {
 
     const parseContacts = (result: QueryResult): EnhancedContact[] => {
         addDebugInfo('解析联系人数据', 'pending', `使用增强解析器处理 ${result.rows.length} 条记录`);
-        
+
         const enhancedContacts = ContactParser.parseContacts(result);
-        
+
         addDebugInfo('解析联系人数据', 'success', `成功解析出 ${enhancedContacts.length} 个联系人`, {
             sampleContacts: enhancedContacts.slice(0, 3).map(contact => ({
                 id: contact.id,
@@ -139,7 +150,7 @@ export function ChatPage() {
                 return acc;
             }, {} as Record<string, number>)
         });
-        
+
         return enhancedContacts;
     };
 
@@ -190,10 +201,10 @@ export function ChatPage() {
                         });
 
                         const messagesData = MessageParser.parseMessages(
-                            result, 
-                            contact, 
-                            contacts, 
-                            messageDb.id, 
+                            result,
+                            contact,
+                            contacts,
+                            messageDb.id,
                             globalMessageIndex
                         );
                         globalMessageIndex += messagesData.length;
@@ -222,7 +233,7 @@ export function ChatPage() {
             addMessageDebugInfo('排序消息', 'pending', `对 ${allMessages.length} 条消息进行排序`);
             allMessages.sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
             addMessageDebugInfo('排序消息', 'success', '消息排序完成');
-            
+
             setMessages(allMessages);
         } catch (err) {
             const errorMessage = err instanceof Error ? err.message : '加载消息失败';
@@ -261,11 +272,11 @@ export function ChatPage() {
     const getStatusIcon = (status: DebugInfo['status']) => {
         switch (status) {
             case 'pending':
-                return <Loader2 className="h-4 w-4 animate-spin text-blue-500" />;
+                return <Loader2 className="h-4 w-4 animate-spin text-blue-500"/>;
             case 'success':
-                return <CheckCircle className="h-4 w-4 text-green-500" />;
+                return <CheckCircle className="h-4 w-4 text-green-500"/>;
             case 'error':
-                return <XCircle className="h-4 w-4 text-red-500" />;
+                return <XCircle className="h-4 w-4 text-red-500"/>;
         }
     };
 
@@ -319,7 +330,7 @@ export function ChatPage() {
                         ))}
                         {/* 分隔线 */}
                         {debugInfo.length > 0 && messageDebugInfo.length > 0 && (
-                            <hr className="border-gray-200 my-3" />
+                            <hr className="border-gray-200 my-3"/>
                         )}
                         {/* 消息相关调试信息 */}
                         {messageDebugInfo.map((info, index) => (
@@ -351,7 +362,7 @@ export function ChatPage() {
                             className="p-2 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-100"
                             title="显示调试信息"
                         >
-                            <AlertCircle className="h-4 w-4" />
+                            <AlertCircle className="h-4 w-4"/>
                         </button>
                     </div>
                     <div className="relative">
@@ -408,14 +419,14 @@ export function ChatPage() {
                                                 ? 'bg-blue-50 border-2 border-blue-200'
                                                 : 'hover:bg-gray-50'
                                         } ${
-                                            messagesLoading 
-                                                ? 'opacity-50 cursor-not-allowed' 
+                                            messagesLoading
+                                                ? 'opacity-50 cursor-not-allowed'
                                                 : 'cursor-pointer'
                                         }`}
                                     >
                                         <div className="flex items-center space-x-3">
-                                            <Avatar 
-                                                name={displayInfo.name} 
+                                            <Avatar
+                                                name={displayInfo.name}
                                                 size="lg"
                                             />
                                             <div className="flex-1 min-w-0">
@@ -426,11 +437,12 @@ export function ChatPage() {
                                                     {displayInfo.subtitle}
                                                 </p>
                                                 {contact.contactType !== 'user' && (
-                                                    <span className={`inline-block px-2 py-1 text-xs rounded-full mt-1 ${
-                                                        contact.contactType === 'group' 
-                                                            ? 'bg-green-100 text-green-700'
-                                                            : 'bg-orange-100 text-orange-700'
-                                                    }`}>
+                                                    <span
+                                                        className={`inline-block px-2 py-1 text-xs rounded-full mt-1 ${
+                                                            contact.contactType === 'group'
+                                                                ? 'bg-green-100 text-green-700'
+                                                                : 'bg-orange-100 text-orange-700'
+                                                        }`}>
                                                         {contact.contactType === 'group' ? '群聊' : '公众号'}
                                                     </span>
                                                 )}
@@ -453,15 +465,15 @@ export function ChatPage() {
                         <div className="flex-shrink-0 bg-white px-6 py-4 border-b border-gray-100">
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center space-x-4">
-                                    <Avatar 
-                                        name={selectedContact.displayName} 
+                                    <Avatar
+                                        name={selectedContact.displayName}
                                         size="md"
                                     />
                                     <div>
                                         <h2 className="text-lg font-semibold text-gray-900 flex items-center">
                                             {selectedContact.displayName}
                                             {messagesLoading && (
-                                                <Loader2 className="h-4 w-4 animate-spin text-blue-600 ml-2" />
+                                                <Loader2 className="h-4 w-4 animate-spin text-blue-600 ml-2"/>
                                             )}
                                         </h2>
                                         <p className="text-sm text-gray-600">
@@ -483,7 +495,7 @@ export function ChatPage() {
                                     className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
                                     title="返回联系人列表"
                                 >
-                                    <ArrowLeft className="h-5 w-5" />
+                                    <ArrowLeft className="h-5 w-5"/>
                                 </button>
                             </div>
                         </div>
@@ -506,17 +518,20 @@ export function ChatPage() {
                                 </div>
                             ) : (
                                 messages.map((message) => (
-                                    <div key={message.id} className={`flex items-start space-x-3 ${message.isOwn ? 'flex-row-reverse space-x-reverse' : ''}`}>
+                                    <div key={message.id}
+                                         className={`flex items-start space-x-3 ${message.isOwn ? 'flex-row-reverse space-x-reverse' : ''}`}>
                                         {/* 发送者头像 */}
-                                        <MessageAvatar 
-                                            name={message.senderDisplayName} 
+                                        <MessageAvatar
+                                            name={message.senderDisplayName}
                                             isOwn={message.isOwn}
                                         />
-                                        
+
                                         {/* 消息内容 */}
-                                        <div className={`max-w-[70%] ${message.isOwn ? 'items-end' : 'items-start'} flex flex-col`}>
+                                        <div
+                                            className={`max-w-[70%] ${message.isOwn ? 'items-end' : 'items-start'} flex flex-col`}>
                                             {/* 发送者名字和时间 */}
-                                            <div className={`flex items-center mb-1 space-x-2 ${message.isOwn ? 'flex-row-reverse space-x-reverse' : ''}`}>
+                                            <div
+                                                className={`flex items-center mb-1 space-x-2 ${message.isOwn ? 'flex-row-reverse space-x-reverse' : ''}`}>
                                                 <span className="text-xs font-medium text-gray-700">
                                                     {message.senderDisplayName}
                                                 </span>
@@ -524,12 +539,13 @@ export function ChatPage() {
                                                     {formatMessageTime(message.timestamp)}
                                                 </span>
                                                 {message.messageType !== 'text' && (
-                                                    <span className="text-xs px-2 py-1 bg-gray-100 text-gray-600 rounded-full">
+                                                    <span
+                                                        className="text-xs px-2 py-1 bg-gray-100 text-gray-600 rounded-full">
                                                         {MessageParser.getMessageTypeLabel(message.messageType)}
                                                     </span>
                                                 )}
                                             </div>
-                                            
+
                                             {/* 消息气泡 */}
                                             <div className={`px-4 py-3 rounded-2xl shadow-sm ${
                                                 message.isOwn
@@ -543,7 +559,8 @@ export function ChatPage() {
                                                     <div className="mt-2 text-xs opacity-75">
                                                         📎 {message.attachment.filename}
                                                         {message.attachment.size && (
-                                                            <span className="ml-1">({Math.round(message.attachment.size / 1024)}KB)</span>
+                                                            <span
+                                                                className="ml-1">({Math.round(message.attachment.size / 1024)}KB)</span>
                                                         )}
                                                     </div>
                                                 )}
@@ -578,9 +595,11 @@ export function ChatPage() {
                         </div>
                     </>
                 ) : (
-                    <div className="flex-1 flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-50 overflow-y-auto">
+                    <div
+                        className="flex-1 flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-50 overflow-y-auto">
                         <div className="text-center max-w-md p-8 bg-white rounded-2xl shadow-lg">
-                            <div className="p-6 bg-blue-50 rounded-full w-24 h-24 mx-auto mb-6 flex items-center justify-center">
+                            <div
+                                className="p-6 bg-blue-50 rounded-full w-24 h-24 mx-auto mb-6 flex items-center justify-center">
                                 <MessageSquare className="h-12 w-12 text-blue-500"/>
                             </div>
                             <h2 className="text-xl font-bold text-gray-900 mb-3">选择一个联系人</h2>

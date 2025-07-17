@@ -1,5 +1,6 @@
 import {DatabaseInfo, TableInfo} from '../types';
-import {Calendar, Database, FolderOpen, Grid, HardDrive, Info, Key, Table} from 'lucide-react';
+import {Calendar, Check, Copy, Database, FolderOpen, Grid, HardDrive, Info, Key, Table} from 'lucide-react';
+import {useState} from 'react';
 
 interface PropertyPanelProps {
     selectedDatabase: DatabaseInfo | null;
@@ -7,6 +8,42 @@ interface PropertyPanelProps {
 }
 
 export function PropertyPanel({selectedDatabase, selectedTable}: PropertyPanelProps) {
+    const [copiedFields, setCopiedFields] = useState<Set<string>>(new Set());
+
+    const copyToClipboard = async (text: string, fieldId: string) => {
+        try {
+            await navigator.clipboard.writeText(text);
+            setCopiedFields(new Set([...copiedFields, fieldId]));
+
+            // Clear the copied state after 2 seconds
+            setTimeout(() => {
+                setCopiedFields(prev => {
+                    const newSet = new Set(prev);
+                    newSet.delete(fieldId);
+                    return newSet;
+                });
+            }, 2000);
+        } catch (err) {
+            console.error('Failed to copy text: ', err);
+            // Fallback for older browsers
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+
+            setCopiedFields(new Set([...copiedFields, fieldId]));
+            setTimeout(() => {
+                setCopiedFields(prev => {
+                    const newSet = new Set(prev);
+                    newSet.delete(fieldId);
+                    return newSet;
+                });
+            }, 2000);
+        }
+    };
+
     const formatFileSize = (bytes?: number): string => {
         if (!bytes) return 'Unknown';
         const units = ['B', 'KB', 'MB', 'GB'];
@@ -116,8 +153,48 @@ export function PropertyPanel({selectedDatabase, selectedTable}: PropertyPanelPr
                                         <span className="text-xs text-slate-600 font-bold">N</span>
                                     </div>
                                     <div className="flex-1">
-                                        <p className="text-xs text-slate-500 font-medium">Name</p>
-                                        <p className="text-sm text-slate-900 font-semibold">{selectedDatabase.filename}</p>
+                                        <div className="flex items-center justify-between">
+                                            <div className="flex-1">
+                                                <p className="text-xs text-slate-500 font-medium">Name</p>
+                                                <p className="text-sm text-slate-900 font-semibold">{selectedDatabase.filename}</p>
+                                            </div>
+                                            <button
+                                                onClick={() => copyToClipboard(selectedDatabase.filename, 'database-name')}
+                                                className="flex items-center space-x-1 px-2 py-1 text-xs bg-slate-200 hover:bg-slate-300 text-slate-700 rounded transition-colors ml-2"
+                                                title="Copy database name"
+                                            >
+                                                {copiedFields.has('database-name') ? (
+                                                    <Check className="h-3 w-3"/>
+                                                ) : (
+                                                    <Copy className="h-3 w-3"/>
+                                                )}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="flex items-center space-x-3">
+                                    <div className="p-1.5 bg-slate-100 rounded-lg">
+                                        <span className="text-xs text-slate-600 font-bold">ID</span>
+                                    </div>
+                                    <div className="flex-1">
+                                        <div className="flex items-center justify-between">
+                                            <div className="flex-1">
+                                                <p className="text-xs text-slate-500 font-medium">Database ID</p>
+                                                <p className="text-sm text-slate-900 font-semibold font-mono">{selectedDatabase.id}</p>
+                                            </div>
+                                            <button
+                                                onClick={() => copyToClipboard(selectedDatabase.id, 'database-id')}
+                                                className="flex items-center space-x-1 px-2 py-1 text-xs bg-slate-200 hover:bg-slate-300 text-slate-700 rounded transition-colors ml-2"
+                                                title="Copy database ID"
+                                            >
+                                                {copiedFields.has('database-id') ? (
+                                                    <Check className="h-3 w-3"/>
+                                                ) : (
+                                                    <Copy className="h-3 w-3"/>
+                                                )}
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -162,7 +239,26 @@ export function PropertyPanel({selectedDatabase, selectedTable}: PropertyPanelPr
                                         <Key className="h-3 w-3 text-amber-600"/>
                                     </div>
                                     <div className="flex-1 min-w-0">
-                                        <p className="text-xs text-slate-500 font-medium mb-1">Encryption Key</p>
+                                        <div className="flex items-center justify-between mb-1">
+                                            <p className="text-xs text-slate-500 font-medium">Encryption Key</p>
+                                            <button
+                                                onClick={() => copyToClipboard(selectedDatabase.key, 'encryption-key')}
+                                                className="flex items-center space-x-1 px-2 py-1 text-xs bg-amber-100 hover:bg-amber-200 text-amber-700 rounded transition-colors"
+                                                title="Copy encryption key"
+                                            >
+                                                {copiedFields.has('encryption-key') ? (
+                                                    <>
+                                                        <Check className="h-3 w-3"/>
+                                                        <span>Copied</span>
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <Copy className="h-3 w-3"/>
+                                                        <span>Copy</span>
+                                                    </>
+                                                )}
+                                            </button>
+                                        </div>
                                         <div className="bg-slate-100 rounded-lg p-2">
                                             <p className="font-mono text-xs text-slate-700 break-all"
                                                title={selectedDatabase.key}>
@@ -179,7 +275,26 @@ export function PropertyPanel({selectedDatabase, selectedTable}: PropertyPanelPr
                                         <FolderOpen className="h-3 w-3 text-slate-600"/>
                                     </div>
                                     <div className="flex-1 min-w-0">
-                                        <p className="text-xs text-slate-500 font-medium mb-1">Path</p>
+                                        <div className="flex items-center justify-between mb-1">
+                                            <p className="text-xs text-slate-500 font-medium">Path</p>
+                                            <button
+                                                onClick={() => copyToClipboard(selectedDatabase.path, 'database-path')}
+                                                className="flex items-center space-x-1 px-2 py-1 text-xs bg-slate-200 hover:bg-slate-300 text-slate-700 rounded transition-colors"
+                                                title="Copy database path"
+                                            >
+                                                {copiedFields.has('database-path') ? (
+                                                    <>
+                                                        <Check className="h-3 w-3"/>
+                                                        <span>Copied</span>
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <Copy className="h-3 w-3"/>
+                                                        <span>Copy</span>
+                                                    </>
+                                                )}
+                                            </button>
+                                        </div>
                                         <div className="bg-slate-100 rounded-lg p-2">
                                             <p className="font-mono text-xs text-slate-700 break-all">{selectedDatabase.path}</p>
                                         </div>
@@ -209,8 +324,23 @@ export function PropertyPanel({selectedDatabase, selectedTable}: PropertyPanelPr
                                         <span className="text-xs text-slate-600 font-bold">N</span>
                                     </div>
                                     <div className="flex-1">
-                                        <p className="text-xs text-slate-500 font-medium">Table Name</p>
-                                        <p className="text-sm text-slate-900 font-semibold">{selectedTable.name}</p>
+                                        <div className="flex items-center justify-between">
+                                            <div className="flex-1">
+                                                <p className="text-xs text-slate-500 font-medium">Table Name</p>
+                                                <p className="text-sm text-slate-900 font-semibold">{selectedTable.name}</p>
+                                            </div>
+                                            <button
+                                                onClick={() => copyToClipboard(selectedTable.name, 'table-name')}
+                                                className="flex items-center space-x-1 px-2 py-1 text-xs bg-green-200 hover:bg-green-300 text-green-700 rounded transition-colors ml-2"
+                                                title="Copy table name"
+                                            >
+                                                {copiedFields.has('table-name') ? (
+                                                    <Check className="h-3 w-3"/>
+                                                ) : (
+                                                    <Copy className="h-3 w-3"/>
+                                                )}
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
 

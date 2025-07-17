@@ -28,22 +28,6 @@ export function DatabaseList({onSelectDatabase, selectedDatabaseId, databases: p
         }
     }, [keysPath, propDatabases]);
 
-    const loadDatabases = async () => {
-        try {
-            setLoading(true);
-            const dbs = await dbManager.getDatabases();
-            // Deduplicate databases based on path
-            const uniqueDbs = dbs.filter((db, index, self) =>
-                index === self.findIndex(d => d.path === db.path)
-            );
-            setDatabases(uniqueDbs);
-        } catch (err) {
-            setError(`Failed to load databases: ${err}`);
-        } finally {
-            setLoading(false);
-        }
-    };
-
     const reloadDatabases = async () => {
         if (!keysPath) {
             setError('No keys file selected');

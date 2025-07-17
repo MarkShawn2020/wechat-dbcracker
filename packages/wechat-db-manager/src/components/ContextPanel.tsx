@@ -15,7 +15,8 @@ export function ContextPanel({selectedDatabase, selectedTable, mode}: ContextPan
         return (
             <div className="flex-1 flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-50">
                 <div className="text-center max-w-md p-8 bg-white rounded-2xl shadow-lg">
-                    <div className="p-6 bg-blue-50 rounded-full w-24 h-24 mx-auto mb-6 flex items-center justify-center">
+                    <div
+                        className="p-6 bg-blue-50 rounded-full w-24 h-24 mx-auto mb-6 flex items-center justify-center">
                         <Database className="h-12 w-12 text-blue-500"/>
                     </div>
                     <h2 className="text-xl font-bold text-gray-900 mb-3">选择一个数据库</h2>
@@ -31,9 +32,9 @@ export function ContextPanel({selectedDatabase, selectedTable, mode}: ContextPan
     if (mode === 'database-properties') {
         return (
             <div className="flex-1 overflow-hidden">
-                <PropertyPanel 
-                    selectedDatabase={selectedDatabase} 
-                    selectedTable={null} 
+                <PropertyPanel
+                    selectedDatabase={selectedDatabase}
+                    selectedTable={null}
                 />
             </div>
         );
@@ -43,9 +44,9 @@ export function ContextPanel({selectedDatabase, selectedTable, mode}: ContextPan
     if (mode === 'table-data' && selectedTable) {
         return (
             <div className="flex-1 overflow-hidden">
-                <TableView 
-                    database={selectedDatabase} 
-                    table={selectedTable} 
+                <TableView
+                    database={selectedDatabase}
+                    table={selectedTable}
                 />
             </div>
         );
