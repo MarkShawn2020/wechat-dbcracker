@@ -16,12 +16,6 @@ export function Navigation({activeTab, onTabChange}: NavigationProps) {
             description: '查看微信聊天记录'
         },
         {
-            id: 'contacts' as const,
-            name: '联系人',
-            icon: Users,
-            description: '查看所有联系人'
-        },
-        {
             id: 'contacts-pro' as const,
             name: '联系人详情',
             icon: UserCheck,

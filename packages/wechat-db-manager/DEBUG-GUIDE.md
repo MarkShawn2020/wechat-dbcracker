@@ -26,33 +26,6 @@ pnpm dev
 - 是否有 Vite 构建错误？
 - 是否有模块导入错误？
 
-### 3. 逐步排查
-
-我已经准备了三个版本的 App.tsx，请按顺序测试：
-
-#### 步骤 1: 测试基础版本
-```bash
-# 复制基础版本
-cp src/App.tsx src/App-current-backup.tsx
-cp src/App-simple.tsx src/App.tsx
-```
-
-如果基础版本能正常显示，说明问题在复杂组件中。
-
-#### 步骤 2: 测试导航版本
-```bash
-# 如果基础版本正常，测试导航版本
-cp src/App-with-nav.tsx src/App.tsx
-```
-
-如果导航版本正常，说明问题在具体页面组件中。
-
-#### 步骤 3: 恢复完整版本
-```bash
-# 测试完整版本
-cp src/App-complex-backup.tsx src/App.tsx
-```
-
 ### 4. 常见问题及解决方案
 
 #### A. 导入路径错误
@@ -92,20 +65,6 @@ window.addEventListener('error', (e) => {
 window.addEventListener('unhandledrejection', (e) => {
   console.error('Unhandled promise rejection:', e.reason);
 });
-```
-
-### 6. 快速修复
-
-如果遇到问题，可以快速使用工作版本：
-
-```bash
-# 使用简化但可工作的版本
-cp src/App-simple.tsx src/App.tsx
-```
-
-然后重新启动开发服务器：
-```bash
-pnpm dev
 ```
 
 ### 7. 联系支持

@@ -55,7 +55,7 @@
 ### 页面组件
 ```
 src/pages/
-├── ChatPage.tsx      # 聊天记录页面
+├── ChatPageOptimized.tsx      # 聊天记录页面
 ├── DatabasePage.tsx  # 数据库管理页面
 ├── OverviewPage.tsx  # 数据概览页面
 └── SettingsPage.tsx  # 设置配置页面

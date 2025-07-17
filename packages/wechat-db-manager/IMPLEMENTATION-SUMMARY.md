@@ -42,18 +42,6 @@ findMatchingChatTables(contact: any, tables: TableInfo[]): TableInfo[]
 - ✅ 优先使用匹配的聊天表，而非遍历所有表
 - ✅ 提高了查询效率和准确性
 
-### 4. 诊断工具
-
-**文件：`src/pages/ChatDebugPage.tsx`**
-
-- ✅ 创建了完整的映射诊断界面
-- ✅ 可视化显示：
-  - 联系人信息
-  - 提取的标识符
-  - 生成的候选表名
-  - 实际匹配的表名
-- ✅ 支持批量诊断和结果分析
-
 ## 技术特性
 
 ### MD5映射算法
