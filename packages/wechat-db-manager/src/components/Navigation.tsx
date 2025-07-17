@@ -1,6 +1,6 @@
-import {BarChart3, Database, MessageSquare, Settings, Users} from 'lucide-react';
+import {BarChart3, Database, MessageSquare, Settings, Users, UserCheck} from 'lucide-react';
 
-export type NavigationTab = 'chat' | 'contacts' | 'database' | 'overview' | 'diagnostic' | 'settings' | 'chatdebug';
+export type NavigationTab = 'chat' | 'contacts' | 'contacts-pro' | 'database' | 'overview' | 'diagnostic' | 'settings' | 'chatdebug';
 
 interface NavigationProps {
     activeTab: NavigationTab;
@@ -20,6 +20,12 @@ export function Navigation({activeTab, onTabChange}: NavigationProps) {
             name: '联系人',
             icon: Users,
             description: '查看所有联系人'
+        },
+        {
+            id: 'contacts-pro' as const,
+            name: '联系人详情',
+            icon: UserCheck,
+            description: '三列布局查看联系人和聊天记录'
         },
         {
             id: 'database' as const,
@@ -42,8 +48,8 @@ export function Navigation({activeTab, onTabChange}: NavigationProps) {
     ];
 
     return (
-        <div className="bg-white border-t border-gray-200 px-6 py-2">
-            <div className="flex justify-center space-x-8">
+        <div className="bg-white border-t border-gray-200 px-2 py-2">
+            <div className="flex justify-center space-x-2 md:space-x-4">
                 {tabs.map((tab) => {
                     const Icon = tab.icon;
                     const isActive = activeTab === tab.id;
@@ -52,15 +58,15 @@ export function Navigation({activeTab, onTabChange}: NavigationProps) {
                         <button
                             key={tab.id}
                             onClick={() => onTabChange(tab.id)}
-                            className={`flex flex-col items-center py-2 px-4 rounded-xl transition-all duration-200 min-w-[80px] ${
+                            className={`flex flex-col items-center py-2 px-2 md:px-3 rounded-lg transition-all duration-200 min-w-[60px] md:min-w-[70px] ${
                                 isActive
                                     ? 'bg-blue-50 text-blue-600'
                                     : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
                             }`}
                             title={tab.description}
                         >
-                            <Icon className={`h-6 w-6 mb-1 ${isActive ? 'text-blue-600' : 'text-gray-500'}`}/>
-                            <span className={`text-xs font-medium ${
+                            <Icon className={`h-5 w-5 md:h-6 md:w-6 mb-1 ${isActive ? 'text-blue-600' : 'text-gray-500'}`}/>
+                            <span className={`text-xs font-medium truncate max-w-full ${
                                 isActive ? 'text-blue-600' : 'text-gray-600'
                             }`}>
                 {tab.name}

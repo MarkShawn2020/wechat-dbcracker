@@ -3,6 +3,7 @@ import {QueryResult} from '../types';
 export interface EnhancedContact {
     id: string;
     originalId?: string;     // 原始数据库标识符，用于消息匹配
+    mNsUsrName?: string;     // m_nsUsrName字段值，用于MD5表映射
     displayName: string;     // 优先显示的名字
     nickname?: string;       // 昵称
     remark?: string;         // 备注名
@@ -102,6 +103,7 @@ export class ContactParser {
             // ID相关字段
             username: ['username', 'user_name', 'wxid', 'wx_id', 'userid', 'user_id'],
             contactid: ['contactid', 'contact_id', 'id', 'talker'],
+            m_nsusrname: ['m_nsusrname', 'nsusrname', 'usr_name', 'usrname', 'nsuser'],
 
             // 头像相关字段
             avatar: ['avatar', 'headimg', 'headimgurl', 'head_img_url', 'portrait', 'photo'],
@@ -161,8 +163,9 @@ export class ContactParser {
         const primaryId = getValue('contactid') || getValue('username');
         const contactId = primaryId || `contact_${index}`;
 
-        // 保存原始标识符用于消息匹配
-        const originalId = primaryId;
+        // 保存原始标识符用于消息匹配 - 优先使用m_nsUsrName
+        const mNsUsrName = getValue('m_nsusrname');
+        const originalId = mNsUsrName || primaryId;
 
         // 判断联系人类型
         const contactType = this.determineContactType(displayName, username);
@@ -170,6 +173,7 @@ export class ContactParser {
         return {
             id: contactId,
             originalId,
+            mNsUsrName,
             displayName,
             nickname,
             remark,

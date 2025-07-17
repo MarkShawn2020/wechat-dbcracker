@@ -5,6 +5,7 @@ import {OverviewPage} from './pages/OverviewPage';
 import {DatabasePage} from './pages/DatabasePage';
 import {ChatPage} from './pages/ChatPageOptimized';
 import {ContactsPage} from './pages/ContactsPage';
+import {ContactsThreeColumnPage} from './pages/ContactsThreeColumnPage';
 import {AutoConnectIndicator} from './components/AutoConnectIndicator';
 import {useAtom} from 'jotai';
 import {initializePersistedStateAtom} from './store/atoms';
@@ -29,6 +30,8 @@ function App() {
                 return <ChatPage/>;
             case 'contacts':
                 return <ContactsPage/>;
+            case 'contacts-pro':
+                return <ContactsThreeColumnPage/>;
             case 'database':
                 return <DatabasePage/>;
             case 'overview':

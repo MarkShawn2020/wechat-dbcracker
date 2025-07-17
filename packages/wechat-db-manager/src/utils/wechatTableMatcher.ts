@@ -158,110 +158,15 @@ export class WeChatTableMatcher {
 
         for (const identifier of identifiers) {
             if (!identifier) continue;
-            
+
             // 生成MD5变体
             candidates.push(...this.generateMD5Variants(identifier));
-            
+
             // 生成直接匹配变体（作为备用）
             candidates.push(...this.generateDirectVariants(identifier));
         }
 
         return [...new Set(candidates)]; // 去重
-    }
-
-    /**
-     * 从联系人对象提取可能的标识符
-     */
-    private static extractContactIdentifiers(contact: any): string[] {
-        const identifiers: string[] = [];
-        
-        // 尝试各种可能的标识符字段
-        const possibleFields = [
-            'M_NSUSRNAME', 'm_nsusrname', 'MUSRNAME', 'musrname',
-            'username', 'user_name', 'wxid', 'wx_id',
-            'originalId', 'id', 'contactid', 'contact_id'
-        ];
-
-        possibleFields.forEach(field => {
-            const value = contact[field];
-            if (value && typeof value === 'string' && value.trim()) {
-                identifiers.push(value.trim());
-            }
-        });
-
-        return identifiers;
-    }
-
-    /**
-     * 生成MD5哈希变体
-     */
-    private static generateMD5Variants(identifier: string): string[] {
-        const variants: string[] = [];
-        const prefixes = ['Chat_', 'chat_', 'ChatRoom_', 'chat', 'message_'];
-        
-        try {
-            // 标准化标识符
-            const normalized = this.normalizeIdentifier(identifier);
-            
-            // 计算MD5
-            const hash = crypto.createHash('md5').update(normalized, 'utf8').digest('hex');
-            
-            // 生成各种表名变体
-            prefixes.forEach(prefix => {
-                variants.push(`${prefix}${hash}`);
-                variants.push(`${prefix}${hash.toUpperCase()}`);
-                variants.push(`${prefix}${hash.substring(0, 8)}`); // 截断版本
-                variants.push(`${prefix}${hash.substring(0, 16)}`); // 半长版本
-            });
-
-            // 尝试不同的编码方式
-            const hashUpper = crypto.createHash('md5').update(identifier.toUpperCase(), 'utf8').digest('hex');
-            const hashLower = crypto.createHash('md5').update(identifier.toLowerCase(), 'utf8').digest('hex');
-            
-            prefixes.forEach(prefix => {
-                if (hashUpper !== hash) {
-                    variants.push(`${prefix}${hashUpper}`);
-                }
-                if (hashLower !== hash) {
-                    variants.push(`${prefix}${hashLower}`);
-                }
-            });
-
-        } catch (error) {
-            console.warn(`MD5计算失败 for ${identifier}:`, error);
-        }
-
-        return variants;
-    }
-
-    /**
-     * 生成直接匹配变体（备用方案）
-     */
-    private static generateDirectVariants(identifier: string): string[] {
-        const variants: string[] = [];
-        const prefixes = ['Chat_', 'chat_', 'ChatRoom_', 'chat', 'message_'];
-        
-        // 清理标识符
-        const cleanId = identifier.replace(/[@\s\-\.]/g, '');
-        
-        prefixes.forEach(prefix => {
-            variants.push(`${prefix}${identifier}`);
-            variants.push(`${prefix}${cleanId}`);
-            variants.push(`${prefix}${identifier.toLowerCase()}`);
-            variants.push(`${prefix}${identifier.toUpperCase()}`);
-        });
-
-        return variants;
-    }
-
-    /**
-     * 标识符标准化
-     */
-    private static normalizeIdentifier(identifier: string): string {
-        return identifier
-            .trim()
-            .normalize('NFC') // Unicode标准化
-            .replace(/\s+/g, ''); // 移除空格
     }
 
     /**
@@ -272,7 +177,7 @@ export class WeChatTableMatcher {
         const matchedTables: TableInfo[] = [];
 
         for (const candidateName of candidateNames) {
-            const matchedTable = tables.find(table => 
+            const matchedTable = tables.find(table =>
                 table.name.toLowerCase() === candidateName.toLowerCase()
             );
             if (matchedTable) {
@@ -302,5 +207,107 @@ export class WeChatTableMatcher {
             candidates,
             matches
         };
+    }
+
+    /**
+     * 从联系人对象提取可能的标识符
+     */
+    private static extractContactIdentifiers(contact: any): string[] {
+        const identifiers: string[] = [];
+
+        // 尝试各种可能的标识符字段
+        const possibleFields = [
+            'mNsUsrName',      // 来自解析器的标准化字段名
+            'originalId',      // 备用标识符
+            'id',              // 联系人ID
+            'username',        // 用户名
+            'm_nsUsrName'      // 原始字段名（大小写敏感）
+        ];
+
+        possibleFields.forEach(field => {
+            const value = contact[field];
+            if (value && typeof value === 'string' && value.trim()) {
+                identifiers.push(value.trim());
+            }
+        });
+
+        // 如果没有找到任何标识符，尝试使用displayName作为备用
+        if (identifiers.length === 0 && contact.displayName) {
+            identifiers.push(contact.displayName);
+        }
+
+        return identifiers;
+    }
+
+    /**
+     * 生成MD5哈希变体
+     */
+    private static generateMD5Variants(identifier: string): string[] {
+        const variants: string[] = [];
+        const prefixes = ['Chat_', 'chat_', 'ChatRoom_', 'chat', 'message_'];
+
+        try {
+            // 标准化标识符
+            const normalized = this.normalizeIdentifier(identifier);
+
+            // 计算MD5
+            const hash = crypto.createHash('md5').update(normalized, 'utf8').digest('hex');
+
+            // 生成各种表名变体
+            prefixes.forEach(prefix => {
+                variants.push(`${prefix}${hash}`);
+                variants.push(`${prefix}${hash.toUpperCase()}`);
+                variants.push(`${prefix}${hash.substring(0, 8)}`); // 截断版本
+                variants.push(`${prefix}${hash.substring(0, 16)}`); // 半长版本
+            });
+
+            // 尝试不同的编码方式
+            const hashUpper = crypto.createHash('md5').update(identifier.toUpperCase(), 'utf8').digest('hex');
+            const hashLower = crypto.createHash('md5').update(identifier.toLowerCase(), 'utf8').digest('hex');
+
+            prefixes.forEach(prefix => {
+                if (hashUpper !== hash) {
+                    variants.push(`${prefix}${hashUpper}`);
+                }
+                if (hashLower !== hash) {
+                    variants.push(`${prefix}${hashLower}`);
+                }
+            });
+
+        } catch (error) {
+            console.warn(`MD5计算失败 for ${identifier}:`, error);
+        }
+
+        return variants;
+    }
+
+    /**
+     * 生成直接匹配变体（备用方案）
+     */
+    private static generateDirectVariants(identifier: string): string[] {
+        const variants: string[] = [];
+        const prefixes = ['Chat_', 'chat_', 'ChatRoom_', 'chat', 'message_'];
+
+        // 清理标识符
+        const cleanId = identifier.replace(/[@\s\-\.]/g, '');
+
+        prefixes.forEach(prefix => {
+            variants.push(`${prefix}${identifier}`);
+            variants.push(`${prefix}${cleanId}`);
+            variants.push(`${prefix}${identifier.toLowerCase()}`);
+            variants.push(`${prefix}${identifier.toUpperCase()}`);
+        });
+
+        return variants;
+    }
+
+    /**
+     * 标识符标准化
+     */
+    private static normalizeIdentifier(identifier: string): string {
+        return identifier
+            .trim()
+            .normalize('NFC') // Unicode标准化
+            .replace(/\s+/g, ''); // 移除空格
     }
 }
