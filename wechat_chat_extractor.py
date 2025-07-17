@@ -13,6 +13,7 @@ WeChat Chat Extractor
 
 import argparse
 import csv
+import hashlib
 import json
 import logging
 import os
@@ -47,6 +48,7 @@ class WeChatChatExtractor:
         self.keys_file_path = Path(keys_file_path)
         self.databases: List[Dict[str, Any]] = []
         self.chat_data: List[Dict[str, Any]] = []
+        self.contacts: Dict[str, Dict[str, Any]] = {}  # 联系人映射: username -> contact_info
         
     def extract_db_type(self, filepath: str) -> str:
         """从文件路径提取数据库类型"""
@@ -359,12 +361,26 @@ class WeChatChatExtractor:
                     break
                 
                 for row in rows:
+                    # 查找对应的联系人信息
+                    contact_info = self.find_contact_for_chat_table(table_name)
+                    
                     message = {
                         'database_path': db_info['path'],
                         'database_type': db_info['type'],
                         'table_name': table_name,
                         'extracted_at': datetime.now().isoformat()
                     }
+                    
+                    # 添加联系人信息
+                    if contact_info:
+                        message.update({
+                            'contact_username': contact_info['username'],
+                            'contact_nickname': contact_info['nickname'],
+                            'contact_remark': contact_info['remark'],
+                            'contact_alias': contact_info['alias'],
+                            'contact_display_name': contact_info['display_name'],
+                            'contact_md5': contact_info['md5']
+                        })
                     
                     # 映射字段值
                     for i, field in enumerate(select_fields):
@@ -439,6 +455,91 @@ class WeChatChatExtractor:
                     return timestamp
         except Exception:
             pass
+        return None
+    
+    def load_contacts(self) -> None:
+        """加载联系人信息"""
+        logger.info("🔍 加载联系人信息...")
+        
+        # 查找Contact数据库
+        contact_db = None
+        for db_info in self.databases:
+            if db_info['type'] == 'Contact':
+                contact_db = db_info
+                break
+        
+        if not contact_db:
+            logger.warning("⚠️ 未找到Contact数据库，无法加载联系人信息")
+            return
+        
+        try:
+            conn = self.connect_database(contact_db)
+            if not conn:
+                logger.warning("⚠️ 无法连接Contact数据库")
+                return
+            
+            cursor = conn.cursor()
+            
+            # 查询WCContact表
+            cursor.execute("SELECT m_nsUsrName, nickname, m_nsRemark, m_nsAliasName FROM WCContact")
+            rows = cursor.fetchall()
+            
+            for row in rows:
+                username, nickname, remark, alias = row
+                if username:
+                    # 处理bytes类型的数据
+                    if isinstance(nickname, bytes):
+                        try:
+                            nickname = nickname.decode('utf-8')
+                        except:
+                            nickname = "<bytes>"
+                    
+                    if isinstance(remark, bytes):
+                        try:
+                            remark = remark.decode('utf-8')
+                        except:
+                            remark = None
+                    
+                    if isinstance(alias, bytes):
+                        try:
+                            alias = alias.decode('utf-8')
+                        except:
+                            alias = None
+                    
+                    # 确定显示名称
+                    display_name = remark if remark else nickname if nickname else username
+                    
+                    self.contacts[username] = {
+                        'username': username,
+                        'nickname': nickname,
+                        'remark': remark,
+                        'alias': alias,
+                        'display_name': display_name,
+                        'md5': hashlib.md5(username.encode('utf-8')).hexdigest()
+                    }
+            
+            conn.close()
+            logger.info(f"✅ 成功加载 {len(self.contacts)} 个联系人")
+            
+        except Exception as e:
+            logger.error(f"❌ 加载联系人失败: {e}")
+    
+    def find_contact_for_chat_table(self, table_name: str) -> Optional[Dict[str, Any]]:
+        """根据聊天表名查找对应的联系人"""
+        # 提取MD5部分
+        if table_name.startswith('Chat_'):
+            # 处理普通Chat表: Chat_xxxxxx
+            md5_part = table_name[5:]  # 去掉'Chat_'前缀
+            
+            # 处理删除表: Chat_Chat_xxxxxx_dels
+            if md5_part.startswith('Chat_') and md5_part.endswith('_dels'):
+                md5_part = md5_part[5:-5]  # 去掉'Chat_'前缀和'_dels'后缀
+            
+            # 查找匹配的联系人
+            for username, contact_info in self.contacts.items():
+                if contact_info['md5'] == md5_part:
+                    return contact_info
+        
         return None
     
     def extract_all_chats(self) -> None:
@@ -532,6 +633,9 @@ class WeChatChatExtractor:
                 logger.error("未找到有效的数据库")
                 return
             
+            # 加载联系人信息
+            self.load_contacts()
+            
             # 提取聊天记录
             self.extract_all_chats()
             
@@ -617,6 +721,7 @@ def main():
         
         extractor = WeChatChatExtractor(args.keys_file)
         extractor.load_keys()
+        extractor.load_contacts()  # 加载联系人信息
         
         print("# WeChat数据库表信息")
         print("# " + "="*80)
@@ -642,7 +747,12 @@ def main():
                     if chat_tables:
                         print("   聊天表:")
                         for table in chat_tables:
-                            print(f"     - {table}")
+                            contact_info = extractor.find_contact_for_chat_table(table)
+                            if contact_info:
+                                display_name = contact_info['display_name']
+                                print(f"     - {table} → {display_name}")
+                            else:
+                                print(f"     - {table}")
                     
                     # 显示所有表（可选）
                     if args.verbose:
@@ -666,6 +776,7 @@ def main():
         
         extractor = WeChatChatExtractor(args.keys_file)
         extractor.load_keys()
+        extractor.load_contacts()  # 加载联系人信息
         
         print(f"📊 导出聊天表信息到CSV文件: {args.csv_tables}")
         
@@ -698,7 +809,10 @@ def main():
                             except:
                                 row_count = 0
                             
-                            table_info.append({
+                            # 查找对应的联系人信息
+                            contact_info = extractor.find_contact_for_chat_table(table_name)
+                            
+                            table_entry = {
                                 'database_name': Path(db_info['path']).name,
                                 'database_type': db_info['type'],
                                 'database_path': db_info['path'],
@@ -711,7 +825,29 @@ def main():
                                 'key': db_info['key'],
                                 'cipher_compatibility': db_info['cipher_compatibility'],
                                 'extracted_at': datetime.now().isoformat()
-                            })
+                            }
+                            
+                            # 添加联系人信息
+                            if contact_info:
+                                table_entry.update({
+                                    'contact_username': contact_info['username'],
+                                    'contact_nickname': contact_info['nickname'],
+                                    'contact_remark': contact_info['remark'],
+                                    'contact_alias': contact_info['alias'],
+                                    'contact_display_name': contact_info['display_name'],
+                                    'contact_md5': contact_info['md5']
+                                })
+                            else:
+                                table_entry.update({
+                                    'contact_username': None,
+                                    'contact_nickname': None,
+                                    'contact_remark': None,
+                                    'contact_alias': None,
+                                    'contact_display_name': None,
+                                    'contact_md5': None
+                                })
+                            
+                            table_info.append(table_entry)
                     
                 finally:
                     conn.close()
@@ -727,6 +863,8 @@ def main():
                 fieldnames = [
                     'database_name', 'database_type', 'database_path', 'database_size',
                     'table_name', 'table_type', 'row_count', 'column_count', 'columns',
+                    'contact_username', 'contact_nickname', 'contact_remark', 'contact_alias', 
+                    'contact_display_name', 'contact_md5',
                     'key', 'cipher_compatibility', 'extracted_at'
                 ]
                 
